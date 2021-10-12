@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using HrApi.Models;
@@ -20,35 +18,32 @@ namespace HrApi.Controllers
             _context = context;
         }
 
-        // GET: api/Companies
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Company>>> GetCompanies()
         {
             return await _context.Companies.Include(c=>c.Employees).ToListAsync();
         }
 
-        // GET: api/Companies/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Company>> GetCompany(int id)
         {
-            var company = await _context.Companies.Where(c=>c.Id==id).Include(c => c.Employees).FirstOrDefaultAsync();
+            var company = await _context.Companies.Include(c => c.Employees).FirstOrDefaultAsync(c => c.Id == id);
+
 
             if (company == null)
             {
                 return NotFound();
             }
 
-            return company;
+            return Ok(company);
         }
 
-        // PUT: api/Companies/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCompany(int id, Company company)
         {
             if (id != company.Id)
             {
-                return BadRequest();
+                return BadRequest("Parameter id doesn't match with company's id ");
             }
 
             _context.Entry(company).State = EntityState.Modified;
@@ -72,18 +67,16 @@ namespace HrApi.Controllers
             return NoContent();
         }
 
-        // POST: api/Companies
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+
         [HttpPost]
         public async Task<ActionResult<Company>> PostCompany(Company company)
         {
-            _context.Companies.Add(company);
+            await _context.Companies.AddAsync(company);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetCompany", new { id = company.Id }, company);
         }
 
-        // DELETE: api/Companies/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCompany(int id)
         {
