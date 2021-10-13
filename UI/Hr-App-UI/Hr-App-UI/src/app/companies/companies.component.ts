@@ -16,7 +16,7 @@ export class CompaniesComponent implements OnInit {
   }
   private loadMembers() {
     this.companiesService.getCompanies().subscribe((companies) => {
-      this.companies = this.companies;
+      this.companies = companies;
     })
   }
   public onItemSelected() {
