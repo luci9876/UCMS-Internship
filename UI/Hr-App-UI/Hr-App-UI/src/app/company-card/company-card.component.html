@@ -1,0 +1,19 @@
+<mat-card class="example-card">
+    <mat-card-header>
+        <!-- <div mat-card-avatar class="example-header-image" style="background-image: url({{company.logoUrl}})"></div> -->
+        <mat-card-title>{{company.Name}}</mat-card-title>
+    </mat-card-header>
+    <!-- <img mat-card-image src={{company.logoUrl}} alt="Company logo"> -->
+    <mat-card-content>
+        <p>{{company.Description}}</p>
+    </mat-card-content>
+    <!-- <mat-card-footer>
+        <mat-form-field>
+            <mat-select (selectionChange)="OnSelectionChanged($event)" multiple placeholder="Product">
+                <mat-option *ngFor="let product of company.products" [value]="product.price">
+                    {{product.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </mat-card-footer> -->
+</mat-card>

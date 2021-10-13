@@ -1,0 +1,3 @@
+<div *ngFor="let company of companies">
+    <app-company-card [company]="company" (selectionChange)="onItemSelected()"></app-company-card>
+</div>

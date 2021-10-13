@@ -4,12 +4,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HrApi.Migrations
 {
     [DbContext(typeof(HrContext))]
-    [Migration("20211012121227_NewColumn")]
-    partial class NewColumn
+    [Migration("20211013111630_NewTable")]
+    partial class NewTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -44,9 +45,6 @@ namespace HrApi.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CompanyId")
-                        .HasColumnType("int");
-
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
 
@@ -55,21 +53,7 @@ namespace HrApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CompanyId");
-
                     b.ToTable("Employees");
-                });
-
-            modelBuilder.Entity("HrApi.Models.Employee", b =>
-                {
-                    b.HasOne("HrApi.Models.Company", null)
-                        .WithMany("Employees")
-                        .HasForeignKey("CompanyId");
-                });
-
-            modelBuilder.Entity("HrApi.Models.Company", b =>
-                {
-                    b.Navigation("Employees");
                 });
 #pragma warning restore 612, 618
         }

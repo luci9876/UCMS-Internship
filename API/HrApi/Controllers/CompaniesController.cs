@@ -21,13 +21,13 @@ namespace HrApi.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Company>>> GetCompanies()
         {
-            return await _context.Companies.Include(c=>c.Employees).ToListAsync();
+            return await _context.Companies.ToListAsync();
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Company>> GetCompany(int id)
         {
-            var company = await _context.Companies.Include(c => c.Employees).FirstOrDefaultAsync(c => c.Id == id);
+            var company = await _context.Companies.FirstOrDefaultAsync(c => c.Id == id);
 
 
             if (company == null)

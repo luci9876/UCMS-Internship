@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using HrApi.Models;
 
 namespace HrApi.Models
 {
@@ -10,5 +11,6 @@ namespace HrApi.Models
         }
         public DbSet<Company> Companies { get; set; }
         public DbSet<Employee> Employees { get; set; }
+        public DbSet<HrApi.Models.Company_Employee> Company_Employee { get; set; }
     }
 }
