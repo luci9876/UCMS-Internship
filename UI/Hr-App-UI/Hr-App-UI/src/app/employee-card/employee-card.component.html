@@ -1,0 +1,30 @@
+<mat-card class="example-card">
+    <mat-card-header>
+        <!-- <div mat-card-avatar class="example-header-image" style="background-image: url({{company.logoUrl}})"></div> -->
+        <mat-card-title>{{employee.firstName}}</mat-card-title>
+    </mat-card-header>
+    <!-- <img mat-card-image src={{company.logoUrl}} alt="Company logo"> -->
+    <mat-card-content>
+        <p>{{employee.lastName}}</p>
+    </mat-card-content>
+    <mat-card-footer>
+        <!-- <form class="example-form">
+            <mat-form-field class="example-full-width" appearance="fill">
+                <mat-label>ID</mat-label>
+                <input matInput placeholder="Ex:" value="0">
+            </mat-form-field>
+
+            <mat-form-field class="example-full-width" appearance="fill">
+                <mat-label>Object</mat-label>
+                <textarea matInput placeholder="Ex:"></textarea>
+            </mat-form-field>
+        </form>
+         <mat-form-field>
+            <mat-select (selectionChange)="OnSelectionChanged($event)" multiple placeholder="Product">
+                <mat-option *ngFor="let product of company.products" [value]="product.price">
+                    {{product.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field> -->
+    </mat-card-footer>
+</mat-card>

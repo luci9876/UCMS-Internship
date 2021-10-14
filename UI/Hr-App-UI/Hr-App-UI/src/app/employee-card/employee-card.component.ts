@@ -1,13 +1,13 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Company } from '../models/company';
+import { Employee } from '../models/employee';
 
 @Component({
-  selector: 'app-company-card',
-  templateUrl: './company-card.component.html',
-  styleUrls: ['./company-card.component.css']
+  selector: 'app-employee-card',
+  templateUrl: './employee-card.component.html',
+  styleUrls: ['./employee-card.component.css']
 })
-export class CompanyCardComponent implements OnInit {
-  @Input() public company!: Company;
+export class EmployeeCardComponent implements OnInit {
+  @Input() public employee!: Employee;
   @Output() public selectionChange = new EventEmitter();
   public constructor() { }
 

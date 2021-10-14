@@ -11,6 +11,7 @@ export class EmployeeService {
   private baseUrl: string = `${environment.apiUrl}Employees`;
   public constructor(private httpClient: HttpClient) { }
   public getEmployees(): Observable<Employee[]> {
+    console.log(this.baseUrl);
     return this.httpClient.get<Employee[]>(this.baseUrl);
   }
 }

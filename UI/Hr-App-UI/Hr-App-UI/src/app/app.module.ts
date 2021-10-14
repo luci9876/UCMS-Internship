@@ -8,20 +8,32 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CompaniesComponent } from './companies/companies.component';
 import { CompanyCardComponent } from './company-card/company-card.component';
 import { MatCardModule } from '@angular/material/card';
+import { EmployeesComponent } from './employees/employees.component';
+import { EmployeeCardComponent } from './employee-card/employee-card.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
     AppComponent,
     CompaniesComponent,
     CompanyCardComponent,
-    routingComponents
+    routingComponents,
+    EmployeesComponent,
+    EmployeeCardComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    MatCardModule
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule,
+    MatButtonModule 
   ],
  
   providers: [],
