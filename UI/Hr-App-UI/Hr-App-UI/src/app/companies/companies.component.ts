@@ -9,16 +9,18 @@ import { Company } from '../models/company';
 })
 export class CompaniesComponent implements OnInit {
   public companies: Company[] = [];
+  
   constructor(private companiesService: CompanyService) { }
 
   ngOnInit(): void {
-    this.loadMembers();
+    this.loadCompanies();
   }
-  private loadMembers() {
+  private loadCompanies() {
     this.companiesService.getCompanies().subscribe((companies) => {
       this.companies = companies
     })
   }
+  
   public onItemSelected() {
     console.log("CompanySelected:");
   }

@@ -1,28 +1,32 @@
-<h1>List of employees</h1>
+<h1 style="text-align: center;">List of employees</h1>
 <div *ngFor="let employee of employees">
     <app-employee-card [employee]="employee" (selectionChange)="onItemSelected()"></app-employee-card>
 </div>
-<h2>Operations</h2>
+<h2 style="text-align: center;">Operations</h2>
 <form class="example-form">
     <mat-form-field class="example-full-width" appearance="fill">
         <mat-label>ID</mat-label>
-        <input matInput placeholder="Ex:" value="0">
+        <input matInput placeholder="ID:" [(ngModel)]="currentId" [ngModelOptions]="{standalone: true}">
     </mat-form-field>
 
     <mat-form-field class="example-full-width" appearance="fill">
-        <mat-label>Object</mat-label>
-        <textarea matInput placeholder="Ex:"></textarea>
+        <mat-label>FirstName</mat-label>
+        <input matInput placeholder="John" [(ngModel)]="currentEmployee.firstName" [ngModelOptions]="{standalone: true}">
+    </mat-form-field>
+    <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>LastName</mat-label>
+        <input matInput placeholder="Doe" [(ngModel)]="currentEmployee.lastName" [ngModelOptions]="{standalone: true}">
     </mat-form-field>
 </form>
 <div class="example-button-row">
-    <button mat-raised-button>Get</button>
-    <button mat-raised-button color="primary">Post</button>
-    <button mat-raised-button color="accent">Put</button>
-    <button mat-raised-button color="warn">Delete</button>
+    <button (click)="loadEmployee()" mat-raised-button>Get</button>
+    <button (click)="addEmployee()" mat-raised-button color="primary">Post</button>
+    <button (click)="editEmployee()" mat-raised-button color="accent">Put</button>
+    <button (click)="deleteEmployee()" mat-raised-button color="warn">Delete</button>
 </div>
 <!-- <mat-form-field>
-            <mat-select (selectionChange)="OnSelectionChanged($event)" multiple placeholder="Product">
-                <mat-option *ngFor="let product of company.products" [value]="product.price">
+            <mat-select (selectionChange)="OnSelectionChanged($event) " multiple placeholder="Product ">
+                <mat-option *ngFor="let product of company.products " [value]="product.price ">
                     {{product.name}}
                 </mat-option>
             </mat-select>

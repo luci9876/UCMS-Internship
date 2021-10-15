@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Employee } from '../models/employee';
 import { EmployeeService } from '../employee.service';
+import { EmployeeCardComponent } from '../employee-card/employee-card.component';
 
 
 @Component({
@@ -10,16 +11,42 @@ import { EmployeeService } from '../employee.service';
 })
 export class EmployeesComponent implements OnInit {
   public employees: Employee[] = [];
+  public currentEmployee:Employee;
+  public currentId:number=0;
   constructor(private employeesService: EmployeeService) { }
 
   ngOnInit(): void {
-    this.loadMembers();
+    this.currentEmployee= {id:0,firstName:" ",lastName:" " };
+    this.loadEmployees();
+    
   }
-  private loadMembers() {
+  private loadEmployees() {
     this.employeesService.getEmployees().subscribe((employees) => {
       this.employees = employees
     })
   }
+  public loadEmployee() {
+    this.employeesService.getEmployeeById(this.currentId).subscribe((employee) => {
+      this.currentEmployee = employee
+    })
+  }
+  public deleteEmployee() {
+    this.employeesService.delteEmployeeById(this.currentId).subscribe(() => {
+      this.currentEmployee= {id:0,firstName:" ",lastName:" " };
+      this.loadEmployees();
+    })
+  }
+  public addEmployee() {
+    this.employeesService.addEmployee(this.currentEmployee).subscribe(() => {
+      this.loadEmployees();
+    })
+  }
+  public editEmployee() {
+      this.employeesService.editEmployee(this.currentId,this.currentEmployee).subscribe(() => {
+        this.loadEmployees();
+      })
+  }
+
   public onItemSelected() {
     console.log("EmployeeSelected:");
   }
