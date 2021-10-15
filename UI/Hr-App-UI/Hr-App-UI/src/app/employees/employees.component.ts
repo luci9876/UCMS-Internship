@@ -49,6 +49,7 @@ export class EmployeesComponent implements OnInit {
 
   public onItemSelected() {
     console.log("EmployeeSelected:");
+    
   }
   
 

@@ -1,22 +1,26 @@
-<h1>List of companies</h1>
+<h1 style="text-align: center;">List of companies</h1>
 <div *ngFor="let company of companies">
     <app-company-card [company]="company" (selectionChange)="onItemSelected()"></app-company-card>
 </div>
-<h2>Operations</h2>
+<h2 style="text-align: center;">Operations</h2>
 <form class="example-form">
     <mat-form-field class="example-full-width" appearance="fill">
         <mat-label>ID</mat-label>
-        <input matInput placeholder="Ex:" value="0">
+        <input matInput placeholder="ID:" [(ngModel)]="currentId" [ngModelOptions]="{standalone: true}">
     </mat-form-field>
 
     <mat-form-field class="example-full-width" appearance="fill">
-        <mat-label>Object</mat-label>
-        <textarea matInput placeholder="Ex:"></textarea>
+        <mat-label>Name</mat-label>
+        <input matInput placeholder="Google" [(ngModel)]="currentCompany.name" [ngModelOptions]="{standalone: true}">
+    </mat-form-field>
+    <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Description</mat-label>
+        <input matInput placeholder="A company..." [(ngModel)]="currentCompany.description" [ngModelOptions]="{standalone: true}">
     </mat-form-field>
 </form>
 <div class="example-button-row">
-    <button mat-raised-button>Get</button>
-    <button mat-raised-button color="primary">Post</button>
-    <button mat-raised-button color="accent">Put</button>
-    <button mat-raised-button color="warn">Delete</button>
+    <button (click)="loadCompany()" mat-raised-button>Get</button>
+    <button (click)="addCompany()" mat-raised-button color="primary">Post</button>
+    <button (click)="editCompany()" mat-raised-button color="accent">Put</button>
+    <button (click)="deleteCompany()" mat-raised-button color="warn">Delete</button>
 </div>
