@@ -65,7 +65,7 @@ namespace HrApi.Controllers
 
 
         }
-        public string CreateToken(AppUser user)
+        protected string CreateToken(AppUser user)
         {
             var claims = new List<Claim>
             {
