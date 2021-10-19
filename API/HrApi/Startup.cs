@@ -6,6 +6,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using HrApi.Models;
 using Microsoft.OpenApi.Models;
+using HrApi.Extensions;
+using HrApi.Services;
 
 namespace HrApi
 {
@@ -23,6 +25,11 @@ namespace HrApi
             services.AddMvc();
             services.AddSingleton<IConfiguration>(Configuration);
             services.AddControllers();
+            services.AddAuthentication();
+            services.AddIdentityService();
+            services.AddJwtToken(Configuration);
+            //services.AddScoped<ValidationFilterAttribute>();
+            services.AddScoped<ITokenService, TokenService>();
             services.AddDbContext<HrContext>(opt =>
                                                opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
            services.AddSwaggerGen(c =>
