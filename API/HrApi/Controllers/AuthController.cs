@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -21,11 +22,15 @@ namespace HrApi.Controllers
     {
         private readonly HrContext _context;
         private readonly SymmetricSecurityKey _key;
-        public AuthController(HrContext context)
+        private IConfiguration _iconfiguration;
+        public AuthController( IConfiguration iconfiguration,HrContext context)
         {
-            _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("Our super  secret key@123"));
+            _iconfiguration = iconfiguration;
+            _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_iconfiguration["SecretKey"]));
             _context = context;
+           
         }
+
         [HttpPost("register")]
         public async Task<ActionResult<AppUser>> RegisterUser(RegisterUserRequest registerUserRequest)
         {
@@ -39,11 +44,11 @@ namespace HrApi.Controllers
                 PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerUserRequest.Password)),
                 PasswordSalt = hmac.Key
             };
-            _context.AppUsers.Add(appUser);
+            await _context.AppUsers.AddAsync(appUser);
             await _context.SaveChangesAsync();
             return appUser;
-
         }
+        
         [HttpPost("login")]
         public async Task<ActionResult<LoggedInUser>> LoginUser(LoginUserRequest loginUserRequest)
         {
@@ -62,8 +67,6 @@ namespace HrApi.Controllers
                 Token = CreateToken(user)
             };
             return loggedInUser;
-
-
         }
         protected string CreateToken(AppUser user)
         {
@@ -77,21 +80,17 @@ namespace HrApi.Controllers
                 Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.Now.AddDays(1),
                 SigningCredentials = credentials,
-                Issuer = "https://localhost:44318/"
-
+                Issuer = _iconfiguration["Issuer"]
             };
             var tokenHandler = new JwtSecurityTokenHandler();
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
 
         }
-
     }
     public class LoggedInUser
     {
-
         public string Username { get; set; }
-
         public string Token { get; set; }
     }
     public class RegisterUserRequest
@@ -108,5 +107,4 @@ namespace HrApi.Controllers
         [Required]
         public string Password { get; set; }
     }
-
 }
