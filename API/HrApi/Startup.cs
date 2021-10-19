@@ -20,8 +20,9 @@ namespace HrApi
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMvc();
+            services.AddSingleton<IConfiguration>(Configuration);
             services.AddControllers();
-
             services.AddDbContext<HrContext>(opt =>
                                                opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
            services.AddSwaggerGen(c =>
