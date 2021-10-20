@@ -14,6 +14,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
+import { RegisterComponent } from './register/register/register.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { FormsModule } from '@angular/forms';
     CompanyCardComponent,
     routingComponents,
     EmployeesComponent,
-    EmployeeCardComponent
+    EmployeeCardComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,

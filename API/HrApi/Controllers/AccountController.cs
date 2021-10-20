@@ -1,4 +1,5 @@
-﻿using HrApi.DTO;
+﻿using HrApi.ActionFilters;
+using HrApi.DTO;
 using HrApi.Models;
 using HrApi.Services;
 using Microsoft.AspNetCore.Identity;
@@ -22,7 +23,7 @@ namespace HrApi.Controllers
             _tokenService = tokenService;
         }
         [HttpPost("register")]
-        //[ServiceFilter(typeof(ValidationFilterAttribute))]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> RegisterUser(RegisterDto registerDTO)
         {
             var user = new User
@@ -45,7 +46,7 @@ namespace HrApi.Controllers
             return StatusCode(201);
         }
         [HttpPost("login")]
-        //[ServiceFilter(typeof(ValidationFilterAttribute))]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<ActionResult<UserDto>> Authenticate(LoginDto loginDTO)
         {
 

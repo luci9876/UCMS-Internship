@@ -8,6 +8,7 @@ using HrApi.Models;
 using Microsoft.OpenApi.Models;
 using HrApi.Extensions;
 using HrApi.Services;
+using HrApi.ActionFilters;
 
 namespace HrApi
 {
@@ -28,7 +29,7 @@ namespace HrApi
             services.AddAuthentication();
             services.AddIdentityService();
             services.AddJwtToken(Configuration);
-            //services.AddScoped<ValidationFilterAttribute>();
+            services.AddScoped<ValidationFilterAttribute>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddDbContext<HrContext>(opt =>
                                                opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
