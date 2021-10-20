@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using HrApi.Models;
 using Microsoft.OpenApi.Models;
+using HrApi.Controllers;
 
 namespace HrApi
 {

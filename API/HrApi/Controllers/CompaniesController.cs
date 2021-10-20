@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using HrApi.Models;
@@ -18,17 +20,18 @@ namespace HrApi.Controllers
             _context = context;
         }
 
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Company>>> GetCompanies()
         {
             return await _context.Companies.ToListAsync();
         }
 
+
         [HttpGet("{id}")]
         public async Task<ActionResult<Company>> GetCompany(int id)
         {
-            var company = await _context.Companies.FirstOrDefaultAsync(c => c.Id == id);
-
+            var company = await _context.Companies.FindAsync(id);
 
             if (company == null)
             {
@@ -38,30 +41,28 @@ namespace HrApi.Controllers
             return Ok(company);
         }
 
+
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCompany(int id, Company company)
         {
             if (id != company.Id)
             {
-                return BadRequest("Parameter id doesn't match with company's id ");
+                return BadRequest("Id's are not matching!");
             }
-
-            _context.Entry(company).State = EntityState.Modified;
-
             try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
             {
                 if (!CompanyExists(id))
                 {
                     return NotFound();
                 }
-                else
-                {
-                    throw;
-                }
+                var entry = _context.Companies.First(e => e.Id == company.Id);
+                _context.Entry(entry).CurrentValues.SetValues(company);
+                await _context.SaveChangesAsync();
+
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
             }
 
             return NoContent();
@@ -71,12 +72,13 @@ namespace HrApi.Controllers
         [HttpPost]
         public async Task<ActionResult<Company>> PostCompany(Company company)
         {
+            if (company == null || string.IsNullOrWhiteSpace(company.Name)) return BadRequest("Invalid object!");
             await _context.Companies.AddAsync(company);
             await _context.SaveChangesAsync();
-
             return CreatedAtAction("GetCompany", new { id = company.Id }, company);
         }
 
+        
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCompany(int id)
         {

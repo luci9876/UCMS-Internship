@@ -18,7 +18,7 @@ namespace HrApi.Controllers
             _context = context;
         }
 
-        
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Employee>>> GetEmployees()
         {
@@ -38,43 +38,40 @@ namespace HrApi.Controllers
             return employee;
         }
 
-        
+
         [HttpPut("{id}")]
         public async Task<IActionResult> PutEmployee(int id, Employee employee)
         {
             if (id != employee.Id)
             {
-                return BadRequest("Parameter id doesn't match with employee's id");
+                return BadRequest("Id's are not matching!");
             }
-
-            _context.Entry(employee).State = EntityState.Modified;
-
             try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
             {
                 if (!EmployeeExists(id))
                 {
                     return NotFound();
                 }
-                else
-                {
-                    throw;
-                }
+                var entry = _context.Companies.First(e => e.Id == employee.Id);
+                _context.Entry(entry).CurrentValues.SetValues(employee);
+                await _context.SaveChangesAsync();
+
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
             }
 
             return NoContent();
         }
 
-  
+
         [HttpPost]
         public async Task<ActionResult<Employee>> PostEmployee(Employee employee)
         {
+            if (employee == null || string.IsNullOrWhiteSpace(employee.FirstName) || string.IsNullOrWhiteSpace(employee.FirstName)) return BadRequest("Invalid object!");
             await _context.Employees.AddAsync(employee);
             await _context.SaveChangesAsync();
-
             return CreatedAtAction("GetEmployee", new { id = employee.Id }, employee);
         }
 
