@@ -9,7 +9,7 @@ import { User } from './models/user';
   providedIn: 'root'
 })
 export class AccountService {
-  private baseUrl: string = `${environment.apiUrl}account/`;
+  private baseUrl: string = `${environment.apiUrl}Account/`;
 
   private currentUserSource = new ReplaySubject<User>(1);
   public currentUser$ = this.currentUserSource.asObservable();
@@ -28,6 +28,7 @@ export class AccountService {
   }
 
   register(model: any) {
+    console.log("Clicked");
     return this.http.post<User>(`${this.baseUrl}register`, model).pipe(
       map((user: User) => {
         if (user) {
@@ -37,7 +38,7 @@ export class AccountService {
       )
     );
   }
-  
+
   setCurrentUser(user: User) {
     user.roles = [];
     const roles = this.getDecodedToken(user.token).role;

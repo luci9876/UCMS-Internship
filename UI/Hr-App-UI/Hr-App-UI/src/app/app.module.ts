@@ -13,8 +13,11 @@ import { EmployeeCardComponent } from './employee-card/employee-card.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { FormsModule } from '@angular/forms';
+import { FormsModule,  ReactiveFormsModule } from '@angular/forms';
 import { RegisterComponent } from './register/register/register.component';
+import { NavbarComponent } from './navbar/navbar/navbar.component';
+import { RouterModule } from '@angular/router';
+import {MatToolbarModule} from '@angular/material/toolbar'; 
 
 @NgModule({
   declarations: [
@@ -24,7 +27,10 @@ import { RegisterComponent } from './register/register/register.component';
     routingComponents,
     EmployeesComponent,
     EmployeeCardComponent,
-    RegisterComponent
+    RegisterComponent,
+    NavbarComponent,
+    
+  
   ],
   imports: [
     BrowserModule,
@@ -35,7 +41,10 @@ import { RegisterComponent } from './register/register/register.component';
     MatFormFieldModule,
     MatInputModule,
     FormsModule,
-    MatButtonModule 
+    MatButtonModule ,
+    RouterModule,
+    MatToolbarModule,
+    ReactiveFormsModule
   ],
  
   providers: [],
