@@ -24,6 +24,9 @@ export class JwtInterceptor implements HttpInterceptor {
             catchError((errorResponse: HttpErrorResponse) => {
                 if (errorResponse) {
                     switch(errorResponse.status){
+                            case 400:
+                            console.warn("400 a bad request was handled");
+                            break;
                             case 401:
                             this.router.navigateByUrl("/");
                             console.warn("The authetication session expired. Please signin again!");

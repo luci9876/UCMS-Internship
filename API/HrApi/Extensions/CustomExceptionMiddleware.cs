@@ -29,7 +29,7 @@ namespace HrApi.Extensions
             catch (AccessViolationException ex)
             {
                 _logger.LogError($"A new violation exception was thrown: {ex}");
-               await HandleExecption(httpContext, ex);
+                await HandleExecption(httpContext, ex);
             }
             catch (DbUpdateConcurrencyException ex)
             {
@@ -54,11 +54,19 @@ namespace HrApi.Extensions
             var message = "";
             switch (exception)
             {
-                case Exception:
-                    message = "";
+                case AccessViolationException:
+                    message = "Acces violation error from custom middleware";
+                    break;
+                case DivideByZeroException:
+                    message = "Division by zero exception  handled from custom middleware";
+                    errorCode = 422;
+                    break;
+                case DbUpdateConcurrencyException:
+                    message = "Database concurrency exception handled from custom middlewar";
+                    errorCode = 400;
                     break;
                 default:
-                    message = "";
+                    message = "Internal Server Error from custom middleware";
                     break;
             }
             context.Response.StatusCode = errorCode;
