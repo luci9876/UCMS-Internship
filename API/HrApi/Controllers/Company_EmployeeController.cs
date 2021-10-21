@@ -75,21 +75,21 @@ namespace HrApi.Controllers
 
             _context.Entry(company_Employee).State = EntityState.Modified;
 
-            try
-            {
+          //  try
+            //{
                 await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
+            //}
+            //catch (DbUpdateConcurrencyException)
+            //{
                 if (!Company_EmployeeExists(id))
                 {
                     return NotFound();
                 }
-                else
-                {
-                    throw;
-                }
-            }
+              //  else
+                //{
+              //      throw;
+                //}
+            //}
 
             return NoContent();
         }

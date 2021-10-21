@@ -17,7 +17,10 @@ import { FormsModule,  ReactiveFormsModule } from '@angular/forms';
 import { RegisterComponent } from './register/register/register.component';
 import { NavbarComponent } from './navbar/navbar/navbar.component';
 import { RouterModule } from '@angular/router';
-import {MatToolbarModule} from '@angular/material/toolbar'; 
+import {MatToolbarModule} from '@angular/material/toolbar';
+import { TestErrorsComponent } from './test-errors/test-errors.component';
+import { ServerErrorComponent } from './server-error/server-error.component';
+import { NotFoundComponent } from './not-found/not-found.component'; 
 
 @NgModule({
   declarations: [
@@ -29,6 +32,9 @@ import {MatToolbarModule} from '@angular/material/toolbar';
     EmployeeCardComponent,
     RegisterComponent,
     NavbarComponent,
+    TestErrorsComponent,
+    ServerErrorComponent,
+    NotFoundComponent,
     
   
   ],

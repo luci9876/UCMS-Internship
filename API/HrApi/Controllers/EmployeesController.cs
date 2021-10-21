@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using HrApi.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HrApi.Controllers
 {
@@ -46,8 +47,8 @@ namespace HrApi.Controllers
             {
                 return BadRequest("Id's are not matching!");
             }
-            try
-            {
+          //  try
+            //{
                 if (!EmployeeExists(id))
                 {
                     return NotFound();
@@ -56,11 +57,11 @@ namespace HrApi.Controllers
                 _context.Entry(entry).CurrentValues.SetValues(employee);
                 await _context.SaveChangesAsync();
 
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                throw;
-            }
+            //}
+            //catch (DbUpdateConcurrencyException)
+            //{
+              //  throw;
+            //}
 
             return NoContent();
         }
@@ -76,6 +77,7 @@ namespace HrApi.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteEmployee(int id)
         {
             var employee = await _context.Employees.FindAsync(id);
