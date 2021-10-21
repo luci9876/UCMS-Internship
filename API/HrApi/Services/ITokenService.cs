@@ -8,6 +8,6 @@ namespace HrApi.Services
 {
     public interface ITokenService
     {
-        public Task<string> CreateToken(LoginDto loginDto);
+         Task<string> CreateToken(LoginDto loginDto);
     }
 }

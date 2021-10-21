@@ -28,7 +28,6 @@ export class AccountService {
   }
 
   register(model: any) {
-    console.log("Clicked");
     return this.http.post<User>(`${this.baseUrl}register`, model).pipe(
       map((user: User) => {
         if (user) {
@@ -43,6 +42,7 @@ export class AccountService {
     user.roles = [];
     const roles = this.getDecodedToken(user.token).role;
     Array.isArray(roles) ? user.roles = roles : user.roles.push(roles);
+    this.currentUserSource.next(user);
   }
   logout(){
     this.currentUserSource.next(undefined);
