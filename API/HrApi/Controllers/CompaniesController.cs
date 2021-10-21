@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using HrApi.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HrApi.Controllers
 {
@@ -22,6 +23,7 @@ namespace HrApi.Controllers
 
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<Company>>> GetCompanies()
         {
             return await _context.Companies.ToListAsync();
@@ -29,6 +31,7 @@ namespace HrApi.Controllers
 
 
         [HttpGet("{id}")]
+        [Authorize(Roles ="Member")]
         public async Task<ActionResult<Company>> GetCompany(int id)
         {
             var company = await _context.Companies.FindAsync(id);
