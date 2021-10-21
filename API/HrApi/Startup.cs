@@ -9,6 +9,7 @@ using Microsoft.OpenApi.Models;
 using HrApi.Extensions;
 using HrApi.Services;
 using HrApi.ActionFilters;
+using HrApi.Controllers;
 
 namespace HrApi
 {
