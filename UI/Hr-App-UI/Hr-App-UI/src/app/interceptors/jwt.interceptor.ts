@@ -4,10 +4,12 @@ import { Observable, throwError } from "rxjs";
 import { User } from "../models/user";
 import { catchError, take } from 'rxjs/operators';
 import { AccountService } from '../account.service';
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
+import { AnyRecord } from "dns";
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
-    constructor(private accountservice: AccountService,private router:Router) { }
+    public details:any;
+    constructor(private accountservice: AccountService,private router:Router,private route: ActivatedRoute) { }
     intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
         let currentUser!: User;
         this.accountservice.currentUser$.pipe(take(1)).subscribe(user => currentUser = user);
@@ -35,7 +37,7 @@ export class JwtInterceptor implements HttpInterceptor {
                             break;
                             case 500:
                             console.warn("500 error was handled");
-                            this.router.navigateByUrl("/server-error");
+                            this.router.navigate(["/server-error"],{ state: {msg: errorResponse.message}});
                             break;
                             default:
                             console.warn("An unexpected error was handled. Please contact the adminstrator");

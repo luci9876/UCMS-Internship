@@ -15,8 +15,7 @@ export class TestErrorsComponent implements OnInit {
   }
 
   divisionByZero(){
- console.log(this.baseUrl+'Companies/division-by-zero');
- this.http.get(this.baseUrl+'/division-by-zero').subscribe(
+ this.http.get(this.baseUrl+'Companies/division-by-zero').subscribe(
    (succesResult)=>console.log(succesResult),
    (errorResult)=>console.warn(errorResult)
    );
