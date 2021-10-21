@@ -38,11 +38,12 @@ namespace HrApi.Controllers
             if (!result.Succeeded)
             {
                 foreach (var error in result.Errors)
-                { ModelState.TryAddModelError(error.Code, error.Description); }
+                {
+                    ModelState.TryAddModelError(error.Code, error.Description);
+                }
                 return BadRequest(ModelState);
             }
             await _userManager.AddToRoleAsync(user, "Member");
-            await _userManager.AddToRolesAsync(user, registerDTO.Roles);
             return StatusCode(201);
         }
         [HttpPost("login")]
@@ -51,7 +52,10 @@ namespace HrApi.Controllers
         {
 
             var token = await _tokenService.CreateToken(loginDTO);
-            if (string.IsNullOrEmpty(token)) return BadRequest("Invalid user or password!");
+            if (string.IsNullOrEmpty(token))
+            {
+                return BadRequest("Invalid user or password!");
+            }
             return new UserDto
             {
                 Username = loginDTO.Username,
