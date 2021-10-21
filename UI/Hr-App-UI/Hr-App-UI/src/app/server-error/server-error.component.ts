@@ -7,9 +7,10 @@ import { Router } from '@angular/router';
   styleUrls: ['./server-error.component.css']
 })
 export class ServerErrorComponent implements OnInit {
-  msg:String="";
-  constructor(private router: Router) { 
-    this.msg=this.router.getCurrentNavigation().extras.state.msg;
+  msg: String = "";
+  constructor(private router: Router) {
+    if (this.router.getCurrentNavigation()?.extras.state?.msg !== null)
+      this.msg = this.router.getCurrentNavigation()?.extras.state?.msg;
   }
 
   ngOnInit(): void {
