@@ -7,6 +7,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using HrApi.Models;
 using Microsoft.AspNetCore.Authorization;
+using HrApi.Pagination;
+using Newtonsoft.Json;
+using System.Diagnostics;
+using HrApi.Sorting;
 
 namespace HrApi.Controllers
 {
@@ -23,15 +27,36 @@ namespace HrApi.Controllers
 
 
         [HttpGet]
-        [Authorize]
-        public async Task<ActionResult<IEnumerable<Company>>> GetCompanies()
+        public ActionResult<IEnumerable<Company>> GetCompanies([FromQuery]CompanyParameters companyParameters)
         {
-            return await _context.Companies.ToListAsync();
+            if (!companyParameters.ValidYearRange)
+            {
+                return BadRequest($"Founding Year can't be bigger than {DateTime.Now.Year} ");
+            }
+
+            var companies = _context.Companies.Where(c=> c.Founded >= companyParameters.MinFounded && c.Founded <= companyParameters.MaxFounded).OrderBy(c => c.Name)
+                 .Skip((companyParameters.PageNumber - 1) * companyParameters.PageSize)
+                 .Take(companyParameters.PageSize);
+            var sorting = new SortingCompanies();
+            sorting.SearchByName(ref companies, companyParameters.Name);
+            sorting.ApplySort(ref companies, companyParameters.OrderBy);
+            var companiesPagination = PagedList<Company>.ToPagedList(companies, companyParameters.PageNumber, companyParameters.PageSize);
+            var metadata = new
+            {
+                companiesPagination.TotalCount,
+                companiesPagination.PageSize,
+                companiesPagination.CurrentPage,
+                companiesPagination.TotalPages,
+                companiesPagination.HasNext,
+                companiesPagination.HasPrevious
+            };
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+            return Ok(companiesPagination);
         }
 
 
         [HttpGet("{id}")]
-        [Authorize(Roles ="Member")]
+        [Authorize(Roles = "Member")]
         public async Task<ActionResult<Company>> GetCompany(int id)
         {
             var company = await _context.Companies.FindAsync(id);
@@ -81,7 +106,7 @@ namespace HrApi.Controllers
             return CreatedAtAction("GetCompany", new { id = company.Id }, company);
         }
 
-        
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCompany(int id)
         {
