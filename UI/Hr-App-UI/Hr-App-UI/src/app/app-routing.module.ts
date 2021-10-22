@@ -9,13 +9,15 @@ import { ServerErrorComponent } from './server-error/server-error.component';
 import { NotFoundComponent } from './not-found/not-found.component'; 
 
 
+
 const routes: Routes = [
   { path: 'companies', component: CompaniesComponent },
   { path: 'employees', component: EmployeesComponent },
   { path: 'register', component: RegisterComponent },
   {path :'test-errors',component:TestErrorsComponent},
   {path :'server-error',component:ServerErrorComponent},
-  {path :'not-found',component:NotFoundComponent}
+  {path :'not-found',component:NotFoundComponent},
+ 
   
   
 ];

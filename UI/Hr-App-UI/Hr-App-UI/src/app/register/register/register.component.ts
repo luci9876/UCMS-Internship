@@ -29,6 +29,7 @@ register(){
     this.router.navigateByUrl("/companies");
   }, error=>{
     console.log(error);
+    
   });
 }
 cancel(){

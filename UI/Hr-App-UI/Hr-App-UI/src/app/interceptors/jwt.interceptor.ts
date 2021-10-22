@@ -5,7 +5,6 @@ import { User } from "../models/user";
 import { catchError, take } from 'rxjs/operators';
 import { AccountService } from '../account.service';
 import { ActivatedRoute, Router } from "@angular/router";
-import { AnyRecord } from "dns";
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
     public details:any;

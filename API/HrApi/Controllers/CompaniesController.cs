@@ -23,7 +23,6 @@ namespace HrApi.Controllers
 
 
         [HttpGet]
-        [Authorize]
         public async Task<ActionResult<IEnumerable<Company>>> GetCompanies()
         {
             return await _context.Companies.ToListAsync();
