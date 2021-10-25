@@ -2,9 +2,12 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using HrApi.Models;
 using Microsoft.AspNetCore.Authorization;
+using HrApi.Services.Interfaces;
+using HrApi.Services;
+using HrApi.DTO;
+using AutoMapper;
 
 namespace HrApi.Controllers
 {
@@ -13,66 +16,60 @@ namespace HrApi.Controllers
     public class EmployeesController : ControllerBase
     {
         private readonly HrContext _context;
+        private readonly IEmployeeService _employeeService;
+        private readonly IMapper _mapper;
 
-        public EmployeesController(HrContext context)
+        public EmployeesController(HrContext context,IEmployeeService employeeService, IMapper mapper)
         {
             _context = context;
+            _employeeService = employeeService;
+            _mapper = mapper;
         }
 
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Employee>>> GetEmployees()
         {
-            return await _context.Employees.ToListAsync();
+            return Ok(_employeeService.GetEmployees());
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Employee>> GetEmployee(int id)
         {
-            var employee = await _context.Employees.FindAsync(id);
-
+            var employee = _employeeService.GetEmployee(id);
+            
             if (employee == null)
             {
                 return NotFound();
             }
-
-            return employee;
+            var employeeDTO = _mapper.Map<EmployeeDTO>(employee);
+            return Ok(employeeDTO);
         }
 
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutEmployee(int id, Employee employee)
+        public async Task<IActionResult> PutEmployee(int id, EmployeeDTO employeeDTO)
         {
-            if (id != employee.Id)
+            var employee = _mapper.Map<Employee>(employeeDTO);
+            var c = _employeeService.PutEmployee(id, employee);
+            if (c == null)
             {
-                return BadRequest("Id's are not matching!");
+                return NotFound();
             }
-          //  try
-            //{
-                if (!EmployeeExists(id))
-                {
-                    return NotFound();
-                }
-                var entry = _context.Companies.First(e => e.Id == employee.Id);
-                _context.Entry(entry).CurrentValues.SetValues(employee);
-                await _context.SaveChangesAsync();
-
-            //}
-            //catch (DbUpdateConcurrencyException)
-            //{
-              //  throw;
-            //}
-
             return NoContent();
         }
 
 
         [HttpPost]
-        public async Task<ActionResult<Employee>> PostEmployee(Employee employee)
+        public async Task<ActionResult<Employee>> PostEmployee(EmployeeDTO employeeDTO)
         {
-            if (employee == null || string.IsNullOrWhiteSpace(employee.FirstName) || string.IsNullOrWhiteSpace(employee.FirstName)) return BadRequest("Invalid object!");
-            await _context.Employees.AddAsync(employee);
-            await _context.SaveChangesAsync();
+            var employee = _mapper.Map<Employee>(employeeDTO);
+            var result = _employeeService.AddEmployee(employee);
+            if (!result)
+            {
+                return BadRequest();
+            }
+            
             return CreatedAtAction("GetEmployee", new { id = employee.Id }, employee);
         }
 
@@ -80,15 +77,11 @@ namespace HrApi.Controllers
         [Authorize]
         public async Task<IActionResult> DeleteEmployee(int id)
         {
-            var employee = await _context.Employees.FindAsync(id);
-            if (employee == null)
+            var result = _employeeService.DeleteEmployee(id);
+            if (!result)
             {
                 return NotFound();
             }
-
-            _context.Employees.Remove(employee);
-            await _context.SaveChangesAsync();
-
             return NoContent();
         }
 

@@ -10,6 +10,11 @@ using HrApi.Extensions;
 using HrApi.Services;
 using HrApi.ActionFilters;
 using HrApi.Controllers;
+using AutoMapper;
+using HrApi.Mapper;
+using HrApi.Services.Interfaces;
+using HrApi.Repositories.Interfaces;
+using HrApi.Repositories;
 
 namespace HrApi
 {
@@ -30,11 +35,24 @@ namespace HrApi
             services.AddAuthentication();
             services.AddIdentityService();
             services.AddJwtToken(Configuration);
+            services.AddScoped<ICompanyRepository, CompanyRepository>();
+            services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             services.AddScoped<ValidationFilterAttribute>();
             services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<ICompanyService, CompanyService>();
+            services.AddScoped<IEmployeeService, EmployeeService>();
             services.AddDbContext<HrContext>(opt =>
                                                opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-           services.AddSwaggerGen(c =>
+
+            var mapperConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new MappingProfile());
+            });
+
+            IMapper mapper = mapperConfig.CreateMapper();
+            services.AddSingleton(mapper);
+
+            services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "TodoApi", Version = "v1" });
             });
