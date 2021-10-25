@@ -28,13 +28,13 @@ namespace HrApi.Controllers
 
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Employee>>> GetEmployees()
+        public ActionResult<IEnumerable<Employee>> GetEmployees()
         {
             return Ok(_employeeService.GetEmployees());
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Employee>> GetEmployee(int id)
+        public ActionResult<Employee> GetEmployee(int id)
         {
             var employee = _employeeService.GetEmployee(id);
             
@@ -48,7 +48,7 @@ namespace HrApi.Controllers
 
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutEmployee(int id, EmployeeDTO employeeDTO)
+        public IActionResult PutEmployee(int id, EmployeeDTO employeeDTO)
         {
             var employee = _mapper.Map<Employee>(employeeDTO);
             var c = _employeeService.PutEmployee(id, employee);
@@ -61,7 +61,7 @@ namespace HrApi.Controllers
 
 
         [HttpPost]
-        public async Task<ActionResult<Employee>> PostEmployee(EmployeeDTO employeeDTO)
+        public ActionResult<Employee> PostEmployee(EmployeeDTO employeeDTO)
         {
             var employee = _mapper.Map<Employee>(employeeDTO);
             var result = _employeeService.AddEmployee(employee);
@@ -75,7 +75,7 @@ namespace HrApi.Controllers
 
         [HttpDelete("{id}")]
         [Authorize]
-        public async Task<IActionResult> DeleteEmployee(int id)
+        public IActionResult DeleteEmployee(int id)
         {
             var result = _employeeService.DeleteEmployee(id);
             if (!result)

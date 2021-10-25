@@ -34,7 +34,7 @@ namespace HrApi.Controllers
 
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Company>>> GetCompanies([FromQuery] CompanyParameters companyParameters)
+        public ActionResult<IEnumerable<Company>> GetCompanies([FromQuery] CompanyParameters companyParameters)
         {
             if (!companyParameters.ValidYearRange)
             {
@@ -63,7 +63,7 @@ namespace HrApi.Controllers
 
         [HttpGet("{id}")]
 
-        public async Task<ActionResult<CompanyDTO>> GetCompany(int id)
+        public ActionResult<CompanyDTO> GetCompany(int id)
         {
             var company= _companyService.GetCompany(id);
             if (company == null)
@@ -76,7 +76,7 @@ namespace HrApi.Controllers
 
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCompany(int id, CompanyDTO companyDTO)
+        public IActionResult PutCompany(int id, CompanyDTO companyDTO)
         {
             var company = _mapper.Map<Company>(companyDTO);
             var c = _companyService.PutCompany(id,company);
@@ -89,7 +89,7 @@ namespace HrApi.Controllers
 
 
         [HttpPost]
-        public async Task<ActionResult<Company>> PostCompany(CompanyDTO companyDTO)
+        public ActionResult<Company> PostCompany(CompanyDTO companyDTO)
         {
             var company= _mapper.Map<Company>(companyDTO);
             var result=_companyService.AddCompany(company);
@@ -103,9 +103,9 @@ namespace HrApi.Controllers
 
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCompany(int id)
+        public IActionResult DeleteCompany(int id)
         {
-            var result = _companyService.DeleteCompany(id);
+            var result =  _companyService.DeleteCompany(id);
             if (!result)
             {
                 return NotFound();
@@ -113,14 +113,14 @@ namespace HrApi.Controllers
             return NoContent();
         }
         [HttpGet("division-by-zero")]
-        public async Task<IActionResult> DivisionByzero()
+        public IActionResult DivisionByzero()
         {
 
             throw new DivideByZeroException();
         }
         [Authorize]
         [HttpGet("unauth")]
-        public async Task<IActionResult> Unauth()
+        public IActionResult Unauth()
         {
             return NoContent();
         }
