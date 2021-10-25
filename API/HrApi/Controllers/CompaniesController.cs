@@ -30,16 +30,16 @@ namespace HrApi.Controllers
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Company>>> GetCompanies([FromQuery] CompanyParameters companyParameters)
-        { 
+        {
             if (!companyParameters.ValidYearRange)
             {
                 return BadRequest($"Founding Year can't be bigger than {DateTime.Now.Year} ");
             }
 
-            var companies = _context.Companies.Where(c=> c.Founded >= companyParameters.MinFounded && c.Founded <= companyParameters.MaxFounded).OrderBy(c => c.Name)
+            var companies = _context.Companies.Where(c => c.Founded >= companyParameters.MinFounded && c.Founded <= companyParameters.MaxFounded).OrderBy(c => c.Name)
                  .Skip((companyParameters.PageNumber - 1) * companyParameters.PageSize)
                  .Take(companyParameters.PageSize);
-            
+
             _sorting.SearchByName(ref companies, companyParameters.Name);
             _sorting.ApplySort(ref companies, companyParameters.OrderBy);
             var companiesPagination = PagedList<Company>.ToPagedList(companies, companyParameters.PageNumber, companyParameters.PageSize);
@@ -81,18 +81,18 @@ namespace HrApi.Controllers
             }
             //try
             //{
-                if (!CompanyExists(id))
-                {
-                    return NotFound();
-                }
-                var entry = _context.Companies.First(e => e.Id == company.Id);
-                _context.Entry(entry).CurrentValues.SetValues(company);
-                await _context.SaveChangesAsync();
+            if (!CompanyExists(id))
+            {
+                return NotFound();
+            }
+            var entry = _context.Companies.First(e => e.Id == company.Id);
+            _context.Entry(entry).CurrentValues.SetValues(company);
+            await _context.SaveChangesAsync();
 
             //}
             //catch (DbUpdateConcurrencyException)
             //{
-              //  throw;
+            //  throw;
             //}
 
             return NoContent();
@@ -134,7 +134,7 @@ namespace HrApi.Controllers
         public async Task<IActionResult> Unauth()
         {
             return NoContent();
-           
+
         }
 
         private bool CompanyExists(int id)
