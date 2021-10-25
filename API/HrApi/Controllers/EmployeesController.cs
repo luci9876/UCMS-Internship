@@ -1,11 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using HrApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using HrApi.Services.Interfaces;
-using HrApi.Services;
 using HrApi.DTO;
 using AutoMapper;
 

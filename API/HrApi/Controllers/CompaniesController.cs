@@ -9,7 +9,6 @@ using HrApi.Pagination;
 using Newtonsoft.Json;
 using HrApi.Sorting;
 using HrApi.Services.Interfaces;
-using HrApi.Services;
 using AutoMapper;
 using HrApi.DTO;
 

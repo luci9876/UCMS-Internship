@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using HrApi.Models;
 using HrApi.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace HrApi.Repositories
 {
@@ -20,7 +21,7 @@ namespace HrApi.Repositories
         public async Task<IEnumerable<Employee>> GetEmployees()
         {
 
-            return HrContext.Employees.OrderBy(e => e.FirstName);
+            return await HrContext.Employees.ToListAsync(); ;
 
 
         }

@@ -9,7 +9,6 @@ using Microsoft.OpenApi.Models;
 using HrApi.Extensions;
 using HrApi.Services;
 using HrApi.ActionFilters;
-using HrApi.Controllers;
 using AutoMapper;
 using HrApi.Mapper;
 using HrApi.Services.Interfaces;
@@ -20,18 +19,20 @@ namespace HrApi
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; }
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        
 
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
             services.AddSingleton<IConfiguration>(Configuration);
             services.AddControllers();
+            services.AddDbContext<HrContext>(ServiceLifetime.Transient);
             services.AddAuthentication();
             services.AddIdentityService();
             services.AddJwtToken(Configuration);

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using HrApi.Models;
 using HrApi.Pagination;
 using HrApi.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace HrApi.Repositories
 {
@@ -21,10 +22,10 @@ namespace HrApi.Repositories
         public async Task<IEnumerable<Company>> GetCompanies(CompanyParameters companyParameters)
         {
 
-            return HrContext.Companies.
+            return await HrContext.Companies.
                 Where(c => c.Founded >= companyParameters.MinFounded && c.Founded <= companyParameters.MaxFounded).OrderBy(c => c.Name)
                 .Skip((companyParameters.PageNumber - 1) * companyParameters.PageSize)
-                .Take(companyParameters.PageSize);
+                .Take(companyParameters.PageSize).ToListAsync();
 
 
         }
