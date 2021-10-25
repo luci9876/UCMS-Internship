@@ -27,8 +27,8 @@ namespace HrApi.Controllers
 
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Company>>> GetCompanies()
-
+        public async Task<ActionResult<IEnumerable<Company>>> GetCompanies([FromQuery] CompanyParameters companyParameters)
+        { 
             if (!companyParameters.ValidYearRange)
             {
                 return BadRequest($"Founding Year can't be bigger than {DateTime.Now.Year} ");
