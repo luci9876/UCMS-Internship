@@ -26,7 +26,8 @@
             </mat-form-field>
         </form>
         <mat-card-actions>
-            <button mat-raised-button [disabled]="!registerForm.valid" click="register()" color="primary" type="submit">Register</button>
+            <!-- <button [disabled]="!registerForm.valid" click="register()" mat-raised-button>Register</button> -->
+            <button type="button" [disabled]="!registerForm.valid" (click)="register()" mat-raised-button>Register</button>
         </mat-card-actions>
     </mat-card-content>
 </mat-card>

@@ -48,7 +48,7 @@ namespace HrApi
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "TodoApi v1"));
             }
-
+            app.UseMiddleware<CustomExceptionMiddleware>();
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseCors(policy => policy

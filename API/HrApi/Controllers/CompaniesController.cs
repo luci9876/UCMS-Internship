@@ -23,7 +23,6 @@ namespace HrApi.Controllers
 
 
         [HttpGet]
-        [Authorize]
         public async Task<ActionResult<IEnumerable<Company>>> GetCompanies()
         {
             return await _context.Companies.ToListAsync();
@@ -31,7 +30,6 @@ namespace HrApi.Controllers
 
 
         [HttpGet("{id}")]
-        [Authorize(Roles ="Member")]
         public async Task<ActionResult<Company>> GetCompany(int id)
         {
             var company = await _context.Companies.FindAsync(id);
@@ -52,8 +50,8 @@ namespace HrApi.Controllers
             {
                 return BadRequest("Id's are not matching!");
             }
-            try
-            {
+            //try
+            //{
                 if (!CompanyExists(id))
                 {
                     return NotFound();
@@ -62,11 +60,11 @@ namespace HrApi.Controllers
                 _context.Entry(entry).CurrentValues.SetValues(company);
                 await _context.SaveChangesAsync();
 
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                throw;
-            }
+            //}
+            //catch (DbUpdateConcurrencyException)
+            //{
+              //  throw;
+            //}
 
             return NoContent();
         }
@@ -95,6 +93,19 @@ namespace HrApi.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
+        }
+        [HttpGet("division-by-zero")]
+        public async Task<IActionResult> DivisionByzero()
+        {
+
+            throw new DivideByZeroException();
+        }
+        [Authorize]
+        [HttpGet("unauth")]
+        public async Task<IActionResult> Unauth()
+        {
+            return NoContent();
+           
         }
 
         private bool CompanyExists(int id)
