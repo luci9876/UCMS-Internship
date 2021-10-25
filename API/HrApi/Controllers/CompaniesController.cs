@@ -19,10 +19,12 @@ namespace HrApi.Controllers
     public class CompaniesController : ControllerBase
     {
         private readonly HrContext _context;
+        private readonly SortingCompanies _sorting;
 
         public CompaniesController(HrContext context)
         {
             _context = context;
+            _sorting = new SortingCompanies();
         }
 
 
@@ -37,9 +39,9 @@ namespace HrApi.Controllers
             var companies = _context.Companies.Where(c=> c.Founded >= companyParameters.MinFounded && c.Founded <= companyParameters.MaxFounded).OrderBy(c => c.Name)
                  .Skip((companyParameters.PageNumber - 1) * companyParameters.PageSize)
                  .Take(companyParameters.PageSize);
-            var sorting = new SortingCompanies();
-            sorting.SearchByName(ref companies, companyParameters.Name);
-            sorting.ApplySort(ref companies, companyParameters.OrderBy);
+            
+            _sorting.SearchByName(ref companies, companyParameters.Name);
+            _sorting.ApplySort(ref companies, companyParameters.OrderBy);
             var companiesPagination = PagedList<Company>.ToPagedList(companies, companyParameters.PageNumber, companyParameters.PageSize);
             var metadata = new
             {
