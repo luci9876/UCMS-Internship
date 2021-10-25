@@ -1,14 +1,13 @@
 <mat-toolbar color="primary">
     <mat-toolbar-row>
-        <h1>HR</h1>
         <span class="menu-spacer">HR App</span>
         <a mat-button routerLink="/">Home</a>
-        <a mat-button routerLink="/Companies">Companies</a>
+        <a mat-button routerLink="/register">Register</a>
     </mat-toolbar-row>
     <mat-toolbar-row class="login-form">
         <div *ngIf="(accountService.currentUser$ | async) as user" class="dropdown" dropdown>
             <p>Welcome {{user.userName | titlecase}}</p>
-            <button mat-raised-button click="logout()" color="primary" type="submit">LOGOUT</button>
+            <button click="logout()" mat-raised-button>LOGOUT</button>
         </div>
         <form *ngIf="(accountService.currentUser$ | async) === undefined || (accountService.currentUser$ | async) === null" [formGroup]="loginForm" class="login-form" (ngSubmit)="loginForm.valid && login()" autocomplete="off">
             <mat-form-field class="full-width">
@@ -19,7 +18,7 @@
                 <mat-label>Password</mat-label>
                 <input matInput placeholder="Password" formControlName="password" required type="password">
             </mat-form-field>
-            <button mat-raised-button click="login()" color="primary" type="submit">LOGIN</button>
+            <button (click)="login()" mat-raised-button>Login</button>
         </form>
     </mat-toolbar-row>
     <mat-toolbar-row>
