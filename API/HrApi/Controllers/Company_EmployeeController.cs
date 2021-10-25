@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using HrApi.Models;
@@ -20,57 +18,34 @@ namespace HrApi.Controllers
             _context = context;
         }
 
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Company_Employee>>> GetCompany_Employee()
         {
-            return await _context.Company_Employee.Include(x=>x.Companies).Include(x=>x.Employees).ToListAsync();
+            return await _context.Company_Employee.ToListAsync();
         }
+
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Company_Employee>> GetCompany_Employee(int id)
         {
-            var company_Employee = await _context.Company_Employee.Include(x => x.Companies).Include(x => x.Employees).FirstOrDefaultAsync(c => c.id == id);
+            var company_Employee = await _context.Company_Employee.FindAsync(id);
 
             if (company_Employee == null)
             {
                 return NotFound();
             }
 
-            return Ok(company_Employee);
+            return company_Employee;
         }
 
-        [HttpGet("company/{id}")]
-        public async Task<ActionResult<Company_Employee>> GetCompany_Employee_ByCompany(int id)
-        {
-            var company_Employee = await _context.Company_Employee.Include(x => x.Employees).FirstOrDefaultAsync(c => c.Company_id == id);
-
-            if (company_Employee == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(company_Employee);
-        }
-
-        [HttpGet("employee/{id}")]
-        public async Task<ActionResult<Company_Employee>> GetCompany_Employee_ByEmployee(int id)
-        {
-            var company_Employee = await _context.Company_Employee.Include(x => x.Companies).FirstOrDefaultAsync(c => c.Employee_id == id);
-
-            if (company_Employee == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(company_Employee);
-        }
-
+        //
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCompany_Employee(int id, Company_Employee company_Employee)
         {
             if (id != company_Employee.id)
             {
-                return BadRequest("Parameter id doesn't match with current id ");
+                return BadRequest();
             }
 
             _context.Entry(company_Employee).State = EntityState.Modified;
@@ -94,7 +69,7 @@ namespace HrApi.Controllers
             return NoContent();
         }
 
-        
+
         [HttpPost]
         public async Task<ActionResult<Company_Employee>> PostCompany_Employee(Company_Employee company_Employee)
         {
@@ -104,7 +79,7 @@ namespace HrApi.Controllers
             return CreatedAtAction("GetCompany_Employee", new { id = company_Employee.id }, company_Employee);
         }
 
-        
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCompany_Employee(int id)
         {

@@ -4,14 +4,16 @@ using HrApi.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HrApi.Migrations
 {
     [DbContext(typeof(HrContext))]
-    partial class HrContextModelSnapshot : ModelSnapshot
+    [Migration("20211022144431_AddedFoundingYear")]
+    partial class AddedFoundingYear
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -47,6 +49,9 @@ namespace HrApi.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("Company_Employeeid")
+                        .HasColumnType("int");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
@@ -58,6 +63,8 @@ namespace HrApi.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Company_Employeeid");
 
                     b.ToTable("Companies");
                 });
@@ -87,6 +94,9 @@ namespace HrApi.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("Company_Employeeid")
+                        .HasColumnType("int");
+
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -96,6 +106,8 @@ namespace HrApi.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Company_Employeeid");
 
                     b.ToTable("Employees");
                 });
@@ -129,22 +141,22 @@ namespace HrApi.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "38e7f966-db02-4208-8b55-a7149dd6faf8",
-                            ConcurrencyStamp = "8af651a0-1745-4def-9135-b1a2044c95eb",
+                            Id = "2f41e1fa-da5a-49b1-97e0-3757afa55b07",
+                            ConcurrencyStamp = "7c047840-a55e-4af2-9d7b-541f31f53635",
                             Name = "Member",
                             NormalizedName = "MEMBER"
                         },
                         new
                         {
-                            Id = "a7d07b4a-57e8-49ff-ab54-04c89dfd1ee9",
-                            ConcurrencyStamp = "e8fe48f7-fded-4e0a-9281-559a86b3cfa0",
+                            Id = "1ff3ab18-5963-4239-b764-376dc00d8539",
+                            ConcurrencyStamp = "0d68aa6e-def1-43d8-b0d5-6332660b5e6f",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
-                            Id = "0099e40a-4160-4fd5-864a-b1dff0895748",
-                            ConcurrencyStamp = "71f2044d-f36b-4db4-a2b9-b51983ea6af7",
+                            Id = "d7056dfe-4da8-42c0-8f9c-c11f00a4d63e",
+                            ConcurrencyStamp = "bfeb16ae-7893-4a08-b88f-08c3f7409595",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });
@@ -338,6 +350,20 @@ namespace HrApi.Migrations
                     b.HasDiscriminator().HasValue("User");
                 });
 
+            modelBuilder.Entity("HrApi.Models.Company", b =>
+                {
+                    b.HasOne("HrApi.Models.Company_Employee", null)
+                        .WithMany("Companies")
+                        .HasForeignKey("Company_Employeeid");
+                });
+
+            modelBuilder.Entity("HrApi.Models.Employee", b =>
+                {
+                    b.HasOne("HrApi.Models.Company_Employee", null)
+                        .WithMany("Employees")
+                        .HasForeignKey("Company_Employeeid");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -387,6 +413,13 @@ namespace HrApi.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("HrApi.Models.Company_Employee", b =>
+                {
+                    b.Navigation("Companies");
+
+                    b.Navigation("Employees");
                 });
 #pragma warning restore 612, 618
         }

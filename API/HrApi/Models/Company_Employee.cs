@@ -8,7 +8,6 @@ namespace HrApi.Models
         public int id { get; set; }
         public int Company_id { get; set; }
         public int Employee_id { get; set; }
-        public ICollection<Employee> Employees { get; set; }
-        public ICollection<Company> Companies { get; set; }
+       
     }
 }
