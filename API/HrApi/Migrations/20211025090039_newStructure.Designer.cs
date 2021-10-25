@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HrApi.Migrations
 {
     [DbContext(typeof(HrContext))]
-    [Migration("20211022144911_ChangeDb")]
-    partial class ChangeDb
+    [Migration("20211025090039_newStructure")]
+    partial class newStructure
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -66,18 +66,15 @@ namespace HrApi.Migrations
 
             modelBuilder.Entity("HrApi.Models.Company_Employee", b =>
                 {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("Company_id")
+                    b.Property<int?>("CompanyId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Employee_id")
+                    b.Property<int?>("EmployeeId")
                         .HasColumnType("int");
 
-                    b.HasKey("id");
+                    b.HasIndex("CompanyId");
+
+                    b.HasIndex("EmployeeId");
 
                     b.ToTable("Company_Employee");
                 });
@@ -131,22 +128,22 @@ namespace HrApi.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "38e7f966-db02-4208-8b55-a7149dd6faf8",
-                            ConcurrencyStamp = "8af651a0-1745-4def-9135-b1a2044c95eb",
+                            Id = "18f2d8c0-1c43-4652-be4a-a5e3877fcf3d",
+                            ConcurrencyStamp = "17eb559f-3179-43c3-83ed-5ab2620e69f5",
                             Name = "Member",
                             NormalizedName = "MEMBER"
                         },
                         new
                         {
-                            Id = "a7d07b4a-57e8-49ff-ab54-04c89dfd1ee9",
-                            ConcurrencyStamp = "e8fe48f7-fded-4e0a-9281-559a86b3cfa0",
+                            Id = "f434064b-0e87-4512-b6b9-9a49a2ac22a1",
+                            ConcurrencyStamp = "23ca565d-6aa9-4a7b-8de7-b8630639f06b",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
-                            Id = "0099e40a-4160-4fd5-864a-b1dff0895748",
-                            ConcurrencyStamp = "71f2044d-f36b-4db4-a2b9-b51983ea6af7",
+                            Id = "95a2b790-d705-4a88-bb48-ef8eefda4611",
+                            ConcurrencyStamp = "06a7d10d-4707-4f40-95c6-936343308c7e",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });
@@ -338,6 +335,21 @@ namespace HrApi.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasDiscriminator().HasValue("User");
+                });
+
+            modelBuilder.Entity("HrApi.Models.Company_Employee", b =>
+                {
+                    b.HasOne("HrApi.Models.Company", "Company")
+                        .WithMany()
+                        .HasForeignKey("CompanyId");
+
+                    b.HasOne("HrApi.Models.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId");
+
+                    b.Navigation("Company");
+
+                    b.Navigation("Employee");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
