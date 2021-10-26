@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using HrApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using HrApi.Pagination;
 using Newtonsoft.Json;
-using System.Diagnostics;
 using HrApi.Sorting;
+using HrApi.Services.Interfaces;
+using AutoMapper;
+using HrApi.DTO;
 
 namespace HrApi.Controllers
 {
@@ -18,13 +18,17 @@ namespace HrApi.Controllers
     [ApiController]
     public class CompaniesController : ControllerBase
     {
-        private readonly HrContext _context;
+        
         private readonly SortingCompanies _sorting;
+        private readonly ICompanyService _companyService;
+        private readonly IMapper _mapper;
 
-        public CompaniesController(HrContext context)
+        public CompaniesController(SortingCompanies sorting,ICompanyService companyService, IMapper mapper)
         {
-            _context = context;
-            _sorting = new SortingCompanies();
+           
+            _sorting = sorting;
+            _companyService = companyService;
+            _mapper = mapper;
         }
 
 
@@ -35,13 +39,12 @@ namespace HrApi.Controllers
             {
                 return BadRequest($"Founding Year can't be bigger than {DateTime.Now.Year} ");
             }
-
-            var companies = _context.Companies.Where(c => c.Founded >= companyParameters.MinFounded && c.Founded <= companyParameters.MaxFounded).OrderBy(c => c.Name)
-                 .Skip((companyParameters.PageNumber - 1) * companyParameters.PageSize)
-                 .Take(companyParameters.PageSize);
+            _companyService.GetCompanies(companyParameters);
+            var companies = _companyService.GetCompanies(companyParameters).AsQueryable();
 
             _sorting.SearchByName(ref companies, companyParameters.Name);
             _sorting.ApplySort(ref companies, companyParameters.OrderBy);
+
             var companiesPagination = PagedList<Company>.ToPagedList(companies, companyParameters.PageNumber, companyParameters.PageSize);
             var metadata = new
             {
@@ -59,52 +62,49 @@ namespace HrApi.Controllers
 
         [HttpGet("{id}")]
 
-        public async Task<ActionResult<Company>> GetCompany(int id)
+        public async Task<ActionResult<CompanyDTO>> GetCompany(int id)
         {
-            var company = await _context.Companies.FindAsync(id);
-
+            var company= _companyService.GetCompany(id);
             if (company == null)
             {
                 return NotFound();
             }
-
-            return Ok(company);
+            var companyDTO = _mapper.Map<CompanyDTO>(company);
+            return Ok(companyDTO);
         }
 
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCompany(int id, Company company)
+        public async Task<IActionResult> PutCompany(int id, CompanyDTO companyDTO)
         {
-            if (id != company.Id)
+            var company = _mapper.Map<Company>(companyDTO);
+
+            try
             {
-                return BadRequest("Id's are not matching!");
+                _companyService.PutCompany(id, company);
             }
-            //try
-            //{
-            if (!CompanyExists(id))
+            catch(Exception)
             {
                 return NotFound();
             }
-            var entry = _context.Companies.First(e => e.Id == company.Id);
-            _context.Entry(entry).CurrentValues.SetValues(company);
-            await _context.SaveChangesAsync();
-
-            //}
-            //catch (DbUpdateConcurrencyException)
-            //{
-            //  throw;
-            //}
-
             return NoContent();
         }
 
 
         [HttpPost]
-        public async Task<ActionResult<Company>> PostCompany(Company company)
+        public async Task<ActionResult<Company>> PostCompany(CompanyDTO companyDTO)
         {
-            if (company == null || string.IsNullOrWhiteSpace(company.Name)) return BadRequest("Invalid object!");
-            await _context.Companies.AddAsync(company);
-            await _context.SaveChangesAsync();
+            var company= _mapper.Map<Company>(companyDTO);
+            try
+            {
+                _companyService.AddCompany(company);
+            }
+            catch (Exception) 
+            {
+                return BadRequest();
+            }
+           
+            
             return CreatedAtAction("GetCompany", new { id = company.Id }, company);
         }
 
@@ -112,34 +112,27 @@ namespace HrApi.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCompany(int id)
         {
-            var company = await _context.Companies.FindAsync(id);
-            if (company == null)
+            try
+            {
+                _companyService.DeleteCompany(id);
+            }
+            catch (Exception) 
             {
                 return NotFound();
             }
-
-            _context.Companies.Remove(company);
-            await _context.SaveChangesAsync();
-
             return NoContent();
         }
         [HttpGet("division-by-zero")]
-        public async Task<IActionResult> DivisionByzero()
+        public IActionResult DivisionByzero()
         {
 
             throw new DivideByZeroException();
         }
         [Authorize]
         [HttpGet("unauth")]
-        public async Task<IActionResult> Unauth()
+        public IActionResult Unauth()
         {
             return NoContent();
-
-        }
-
-        private bool CompanyExists(int id)
-        {
-            return _context.Companies.Any(e => e.Id == id);
-        }
+        } 
     }
 }
