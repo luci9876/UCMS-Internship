@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HrApi.Models;
@@ -17,7 +18,7 @@ namespace HrApi.Repositories
 
         public HrContext HrContext
         {
-            get { return Context as HrContext; }
+            get { return Context; }
         }
         public async Task<IEnumerable<Company>> GetCompanies(CompanyParameters companyParameters)
         {
@@ -36,7 +37,7 @@ namespace HrApi.Repositories
         public async Task PutCompany(int id, Company company)
         {
 
-            var entry = HrContext.Companies.First(e => e.Id == id);
+            var entry = HrContext.Companies.FirstAsync(e => e.Id == id);
             HrContext.Entry(entry).CurrentValues.SetValues(company);
             await HrContext.SaveChangesAsync();
 
@@ -49,13 +50,13 @@ namespace HrApi.Repositories
 
         }
 
-        public async Task<bool> DeleteCompany(int id)
+        public async Task DeleteCompany(int id)
         {
-            var entry = HrContext.Companies.First(e => e.Id == id);
-            if (entry == null) return false;
-            HrContext.Companies.Remove(entry);
+            var entry = HrContext.Companies.FirstAsync(e => e.Id == id);
+            if (entry == null) throw new Exception();
+            HrContext.Companies.Remove(entry.Result);
             await HrContext.SaveChangesAsync();
-            return true;
+            
 
         }
 

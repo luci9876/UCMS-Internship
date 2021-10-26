@@ -8,12 +8,10 @@ namespace HrApi.Services.Interfaces
 {
     public interface IEmployeeService
     {
-        bool AddEmployee(Employee employee);
+        void AddEmployee(Employee employee);
         Employee GetEmployee(int id);
         Employee PutEmployee(int id, Employee company);
         IEnumerable<Employee> GetEmployees();
-        bool DeleteEmployee(int id);
-
-
+        void DeleteEmployee(int id);
     }
 }

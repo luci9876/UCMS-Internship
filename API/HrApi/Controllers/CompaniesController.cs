@@ -18,22 +18,22 @@ namespace HrApi.Controllers
     [ApiController]
     public class CompaniesController : ControllerBase
     {
-        private readonly HrContext _context;
+        
         private readonly SortingCompanies _sorting;
         private readonly ICompanyService _companyService;
         private readonly IMapper _mapper;
 
-        public CompaniesController(HrContext context, ICompanyService companyService, IMapper mapper)
+        public CompaniesController(SortingCompanies sorting,ICompanyService companyService, IMapper mapper)
         {
-            _context = context;
-            _sorting = new SortingCompanies();
+           
+            _sorting = sorting;
             _companyService = companyService;
             _mapper = mapper;
         }
 
 
         [HttpGet]
-        public ActionResult<IEnumerable<Company>> GetCompanies([FromQuery] CompanyParameters companyParameters)
+        public async Task<ActionResult<IEnumerable<Company>>> GetCompanies([FromQuery] CompanyParameters companyParameters)
         {
             if (!companyParameters.ValidYearRange)
             {
@@ -62,7 +62,7 @@ namespace HrApi.Controllers
 
         [HttpGet("{id}")]
 
-        public ActionResult<CompanyDTO> GetCompany(int id)
+        public async Task<ActionResult<CompanyDTO>> GetCompany(int id)
         {
             var company= _companyService.GetCompany(id);
             if (company == null)
@@ -75,11 +75,15 @@ namespace HrApi.Controllers
 
 
         [HttpPut("{id}")]
-        public IActionResult PutCompany(int id, CompanyDTO companyDTO)
+        public async Task<IActionResult> PutCompany(int id, CompanyDTO companyDTO)
         {
             var company = _mapper.Map<Company>(companyDTO);
-            var c = _companyService.PutCompany(id,company);
-            if (c == null)
+
+            try
+            {
+                _companyService.PutCompany(id, company);
+            }
+            catch(Exception)
             {
                 return NotFound();
             }
@@ -88,24 +92,31 @@ namespace HrApi.Controllers
 
 
         [HttpPost]
-        public ActionResult<Company> PostCompany(CompanyDTO companyDTO)
+        public async Task<ActionResult<Company>> PostCompany(CompanyDTO companyDTO)
         {
             var company= _mapper.Map<Company>(companyDTO);
-            var result=_companyService.AddCompany(company);
-           
-            if (!result)
+            try
+            {
+                _companyService.AddCompany(company);
+            }
+            catch (Exception) 
             {
                 return BadRequest();
             }
+           
+            
             return CreatedAtAction("GetCompany", new { id = company.Id }, company);
         }
 
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteCompany(int id)
+        public async Task<IActionResult> DeleteCompany(int id)
         {
-            var result =  _companyService.DeleteCompany(id);
-            if (!result)
+            try
+            {
+                _companyService.DeleteCompany(id);
+            }
+            catch (Exception) 
             {
                 return NotFound();
             }
@@ -122,11 +133,6 @@ namespace HrApi.Controllers
         public IActionResult Unauth()
         {
             return NoContent();
-        }
-
-        private bool CompanyExists(int id)
-        {
-            return _context.Companies.Any(e => e.Id == id);
-        }
+        } 
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HrApi.Models;
@@ -32,7 +33,7 @@ namespace HrApi.Repositories
         public async Task PutEmployee(int id, Employee employee)
         {
 
-            var entry = HrContext.Employees.First(e => e.Id == id);
+            var entry = HrContext.Employees.FirstAsync(e => e.Id == id);
             HrContext.Entry(entry).CurrentValues.SetValues(employee);
             await HrContext.SaveChangesAsync();
 
@@ -45,13 +46,12 @@ namespace HrApi.Repositories
 
         }
 
-        public async Task<bool> DeleteEmployee(int id)
+        public async Task DeleteEmployee(int id)
         {
-            var entry = HrContext.Employees.First(e => e.Id == id);
-            if (entry == null) return false ;
-            HrContext.Employees.Remove(entry);
+            var entry = HrContext.Employees.FirstAsync(e => e.Id == id);
+            if (entry == null) throw new Exception();
+            HrContext.Employees.Remove(entry.Result);
             await HrContext.SaveChangesAsync();
-            return true;
         }
 
     }

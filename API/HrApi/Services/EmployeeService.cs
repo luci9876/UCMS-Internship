@@ -1,6 +1,7 @@
 ﻿using HrApi.Models;
 using HrApi.Repositories.Interfaces;
 using HrApi.Services.Interfaces;
+using System;
 using System.Collections.Generic;
 
 
@@ -14,11 +15,11 @@ namespace HrApi.Services
         {
             _employeeRepository = employeeRepository;
         }
-        public bool AddEmployee(Employee employee)
+        public void AddEmployee(Employee employee)
         {
-            if (employee == null || string.IsNullOrWhiteSpace(employee.FirstName)) return false;
+            if (employee == null || string.IsNullOrWhiteSpace(employee.FirstName)) throw new Exception();
             _employeeRepository.PostEmployee(employee);
-            return true;
+          
 
         }
         public Employee GetEmployee(int id)
@@ -32,15 +33,22 @@ namespace HrApi.Services
         }
         public Employee PutEmployee(int id, Employee employee)
         {
-            if (employee == null || string.IsNullOrWhiteSpace(employee.FirstName)) return null;
+            if (employee == null || string.IsNullOrWhiteSpace(employee.FirstName)) throw new Exception();
             _employeeRepository.PutEmployee(id, employee);
             return _employeeRepository.GetEmployee(id).Result;
 
 
         }
-        public bool DeleteEmployee(int id)
+        public void DeleteEmployee(int id)
         {
-            return _employeeRepository.DeleteEmployee(id).Result;
+            try
+            {
+                _employeeRepository.DeleteEmployee(id);
+            }
+            catch(Exception)
+            {
+                throw new Exception();
+            }
 
         }
     }

@@ -11,11 +11,11 @@ namespace HrApi.Models
         {
             Configuration = configuration;
         }
-        public  virtual DbSet<Company> Companies { get; set; }
-        public virtual DbSet<Employee> Employees { get; set; }
-        public virtual DbSet<Company_Employee> Company_Employee { get; set; }
-        public virtual DbSet<AppUser> AppUsers { get; set; }
-        public virtual DbSet<User> Users { get; set; }
+        public   DbSet<Company> Companies { get; set; }
+        public  DbSet<Employee> Employees { get; set; }
+        public  DbSet<Company_Employee> Company_Employee { get; set; }
+        public  DbSet<AppUser> AppUsers { get; set; }
+        public  DbSet<User> Users { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

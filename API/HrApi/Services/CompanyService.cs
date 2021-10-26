@@ -2,6 +2,7 @@
 using HrApi.Pagination;
 using HrApi.Repositories.Interfaces;
 using HrApi.Services.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -15,11 +16,11 @@ namespace HrApi.Services
         {
             _companyRepository = companyRepository;
         }
-        public bool AddCompany(Company company)
+        public void AddCompany(Company company)
         {
-            if (company == null || string.IsNullOrWhiteSpace(company.Name)) return false;
+            if (company == null || string.IsNullOrWhiteSpace(company.Name)) throw new Exception();
             _companyRepository.PostCompany(company);
-            return true;
+           
 
         }
         public Company GetCompany(int id)
@@ -33,15 +34,22 @@ namespace HrApi.Services
         }
         public Company PutCompany(int id, Company company)
         {
-            if (company == null || string.IsNullOrWhiteSpace(company.Name)) return null;
+            if (company == null || string.IsNullOrWhiteSpace(company.Name)) throw new Exception();
             _companyRepository.PutCompany(id, company);
             return _companyRepository.GetCompany(id).Result;
 
 
         }
-        public bool DeleteCompany(int id)
+        public void DeleteCompany(int id)
         {
-            return _companyRepository.DeleteCompany(id).Result;
+            try
+            {
+                _companyRepository.DeleteCompany(id);
+            }
+            catch(Exception)
+            {
+                throw new Exception();
+            }
 
         }
 

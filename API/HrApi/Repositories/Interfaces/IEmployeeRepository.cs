@@ -11,7 +11,7 @@ namespace HrApi.Repositories.Interfaces
         Task<IEnumerable<Employee>> GetEmployees();
         Task<Employee> GetEmployee(int id);
         Task<Employee> PostEmployee(Employee employee);
-        Task<bool> DeleteEmployee(int id);
+        Task DeleteEmployee(int id);
         Task PutEmployee(int id, Employee employee);
     }
 }

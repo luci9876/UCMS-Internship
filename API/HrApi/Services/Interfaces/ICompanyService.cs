@@ -9,10 +9,10 @@ namespace HrApi.Services.Interfaces
 {
     public interface ICompanyService
     {
-        bool AddCompany(Company company);
+        void AddCompany(Company company);
         Company GetCompany(int id);
         Company PutCompany(int id, Company company);
         IEnumerable<Company> GetCompanies(CompanyParameters companyParameters);
-        bool DeleteCompany(int id);
+        void DeleteCompany(int id);
     }
 }

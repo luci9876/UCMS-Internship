@@ -9,10 +9,10 @@ namespace HrApi.Mapper
     {
         public MappingProfile()
         {
-            CreateMap<Company, CompanyDTO>();
-            CreateMap<CompanyDTO, Company>();
-            CreateMap<Employee, EmployeeDTO>();
-            CreateMap<EmployeeDTO, Employee>();
+            CreateMap<Company, CompanyDTO>().ReverseMap();
+
+            CreateMap<Employee, EmployeeDTO>().ReverseMap();
+           
 
         }
     }

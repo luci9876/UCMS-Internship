@@ -10,7 +10,7 @@ namespace HrApi.Repositories.Interfaces
         Task<IEnumerable<Company>> GetCompanies(CompanyParameters companyParameters);
         Task<Company> GetCompany(int id);
         Task<Company> PostCompany(Company company);
-        Task<bool> DeleteCompany(int id);
+        Task DeleteCompany(int id);
         Task PutCompany(int id, Company company);
     }
 }
