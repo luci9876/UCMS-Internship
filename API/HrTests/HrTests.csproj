@@ -16,6 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\HrApi.BussinessLogic\HrApi.BussinessLogic.csproj" />
+    <ProjectReference Include="..\HrApi.Data\HrApi.Data.csproj" />
     <ProjectReference Include="..\HrApi\HrApi.csproj" />
   </ItemGroup>
 
