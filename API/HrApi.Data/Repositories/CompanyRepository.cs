@@ -1,34 +1,63 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
+using HrApi.Data.Models.Helpers.Interfaces;
+using HrApi.Data.Models.Interfaces;
 using HrApi.Models;
 using HrApi.Pagination;
 using HrApi.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Dynamic.Core;
+using HrApi.Data.Models;
 
 namespace HrApi.Repositories
 {
     public class CompanyRepository : GenericRepository<Company>, ICompanyRepository
     {
-        public CompanyRepository(HrContext dBContext) : base(dBContext)
+        private ISortHelper<Company> _sortHelper;
+        private IDataShaper<Company> _dataShaper;
+        public CompanyRepository(HrContext dBContext, ISortHelper<Company> sortHelper, IDataShaper<Company> dataShaper) : base(dBContext)
         {
-
+            _sortHelper = sortHelper;
+            _dataShaper = dataShaper;
         }
 
         public HrContext HrContext
         {
             get { return Context; }
         }
-        public async Task<IEnumerable<Company>> GetCompanies(CompanyParameters companyParameters)
+        public async Task<PagedList<Entity>> GetCompanies(CompanyParameters companyParameters)
         {
 
-            return await HrContext.Companies.
+            var companiesList= await HrContext.Companies.
                 Where(c => c.Founded >= companyParameters.MinFounded && c.Founded <= companyParameters.MaxFounded).OrderBy(c => c.Name)
                 .Skip((companyParameters.PageNumber - 1) * companyParameters.PageSize)
                 .Take(companyParameters.PageSize).ToListAsync();
+            var  companies = companiesList.AsQueryable();
+            SearchByName(ref companies, companyParameters.Name);
 
+            var sortedCompanies = _sortHelper.ApplySort(companies, companyParameters.OrderBy);
+            var shapedCompanies = _dataShaper.ShapeData(sortedCompanies, companyParameters.Fields);
 
+            return PagedList<Entity>.ToPagedList(shapedCompanies,companyParameters.PageNumber,companyParameters.PageSize);
+        }
+        public async Task<Entity> GetCompanyById(Guid companyId, string fields)
+        {
+            var company = HrContext.Companies.Where(c => c.Id.Equals(companyId)).DefaultIfEmpty(new Company()).FirstOrDefaultAsync();
+
+            return _dataShaper.ShapeData(company.Result, fields);
+        }
+        private void SearchByName(ref IQueryable<Company> company, string companyName)
+        {
+            if (!company.Any() || string.IsNullOrWhiteSpace(companyName))
+                return;
+
+            if (string.IsNullOrEmpty(companyName))
+                return;
+
+            company = company.Where(o => o.Name.ToLowerInvariant().Contains(companyName.Trim().ToLowerInvariant()));
         }
         public async Task<Company> GetCompany(int id)
         {
@@ -56,6 +85,31 @@ namespace HrApi.Repositories
             if (entry == null) throw new Exception();
             HrContext.Companies.Remove(entry.Result);
             await HrContext.SaveChangesAsync();
+
+
+        }
+        public async Task<IEnumerable<Employee>> GetEmployeesByCompany(int id)
+        {
+            var results = HrContext.CompanyEmployee.Where(x => x.Company.Id == id).ToListAsync();
+            var employees = new List<Employee>();
+            foreach (var result in results.Result) 
+            {
+                employees.Add(result.Employee);
+            }
+            return  employees;
+
+
+        }
+        public async Task<CompanyEmployee> PostCompanyEmployee(Company company,Employee employee)
+        {
+            var companyEmployee = new CompanyEmployee
+            {
+                Employee = employee,
+                Company = company
+            };
+            await HrContext.CompanyEmployee.AddAsync(companyEmployee);
+            await HrContext.SaveChangesAsync();
+            return companyEmployee;
             
 
         }

@@ -1,10 +1,11 @@
-﻿using HrApi.Models;
+﻿using HrApi.Data.Models;
+using HrApi.Models;
 using HrApi.Pagination;
 using HrApi.Repositories.Interfaces;
 using HrApi.Services.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.Linq;
 
 namespace HrApi.Services
 {
@@ -28,7 +29,7 @@ namespace HrApi.Services
             return  _companyRepository.GetCompany(id).Result;
 
         }
-        public IEnumerable<Company> GetCompanies(CompanyParameters companyParameters)
+        public PagedList<Entity> GetCompanies(CompanyParameters companyParameters)
         {
             return _companyRepository.GetCompanies(companyParameters).Result;
         }
@@ -47,6 +48,33 @@ namespace HrApi.Services
                 _companyRepository.DeleteCompany(id);
             }
             catch(Exception)
+            {
+                throw new Exception();
+            }
+
+        }
+        public  IEnumerable<Employee> GetEmployeesByCompany(int id) 
+        {
+            
+            try
+            {
+                var employees=  _companyRepository.GetEmployeesByCompany(id).Result.ToList();
+                return employees;
+            }
+            catch (Exception)
+            {
+                throw new Exception();
+            }
+           
+        }
+        public CompanyEmployee PostCompanyEmployee(Company company, Employee employee) 
+        {
+            try
+            {
+                var result=_companyRepository.PostCompanyEmployee(company,employee);
+                return result.Result;
+            }
+            catch (Exception)
             {
                 throw new Exception();
             }

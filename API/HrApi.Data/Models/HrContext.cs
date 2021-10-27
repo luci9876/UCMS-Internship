@@ -13,14 +13,14 @@ namespace HrApi.Models
         }
         public   DbSet<Company> Companies { get; set; }
         public  DbSet<Employee> Employees { get; set; }
-        public  DbSet<Company_Employee> Company_Employee { get; set; }
+        public  DbSet<CompanyEmployee> CompanyEmployee { get; set; }
         public  DbSet<AppUser> AppUsers { get; set; }
         public  DbSet<User> Users { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
             builder
-            .Entity<Company_Employee>(
+            .Entity<CompanyEmployee>(
             x =>
             {
                 x.HasNoKey();

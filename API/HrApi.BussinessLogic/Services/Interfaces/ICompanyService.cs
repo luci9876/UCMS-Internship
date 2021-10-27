@@ -1,4 +1,5 @@
-﻿using HrApi.Models;
+﻿using HrApi.Data.Models;
+using HrApi.Models;
 using HrApi.Pagination;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,9 @@ namespace HrApi.Services.Interfaces
         void AddCompany(Company company);
         Company GetCompany(int id);
         Company PutCompany(int id, Company company);
-        IEnumerable<Company> GetCompanies(CompanyParameters companyParameters);
+        PagedList<Entity> GetCompanies(CompanyParameters companyParameters);
         void DeleteCompany(int id);
+        IEnumerable<Employee> GetEmployeesByCompany(int id);
+        CompanyEmployee PostCompanyEmployee(Company company, Employee employee);
     }
 }

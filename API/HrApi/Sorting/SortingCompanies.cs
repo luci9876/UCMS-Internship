@@ -6,10 +6,11 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Linq.Dynamic.Core;
+using HrApi.Sorting.Interfaces;
 
 namespace HrApi.Sorting
 {
-    public class SortingCompanies
+    public class SortingCompanies:ISortingCompanies
     {
         public void ApplySort(ref IQueryable<Company> companies, string orderByQueryString)
         {

@@ -14,6 +14,14 @@ using HrApi.Mapper;
 using HrApi.Services.Interfaces;
 using HrApi.Repositories.Interfaces;
 using HrApi.Repositories;
+using HrApi.Sorting;
+using HrApi.Sorting.Interfaces;
+using HrApi.Data.Repositories.Interfaces;
+using HrApi.Data.Repositories;
+using HrApi.Data.Models.Helpers.Interfaces;
+using HrApi.Data.Models.Helpers;
+using HrApi.Data.Models.Interfaces;
+using HrApi.Data.Models;
 
 namespace HrApi
 {
@@ -31,14 +39,26 @@ namespace HrApi
         {
             services.AddMvc();
             services.AddSingleton<IConfiguration>(Configuration);
-            services.AddControllers();
+            services.AddControllers(config =>
+            {
+                config.RespectBrowserAcceptHeader = true;
+                config.ReturnHttpNotAcceptable = true;
+            }).AddXmlDataContractSerializerFormatters().AddNewtonsoftJson();
             services.AddDbContext<HrContext>(ServiceLifetime.Transient);
             services.AddAuthentication();
             services.AddIdentityService();
             services.AddJwtToken(Configuration);
+
+            services.AddScoped<ISortHelper<Company>, SortHelper<Company>>();
+
+            services.AddScoped<IDataShaper<Company>, DataShaper<Company>>();
+
+            services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
+
             services.AddScoped<ICompanyRepository, CompanyRepository>();
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             services.AddScoped<ValidationFilterAttribute>();
+            services.AddScoped<ISortingCompanies, SortingCompanies>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<ICompanyService, CompanyService>();
             services.AddScoped<IEmployeeService, EmployeeService>();
