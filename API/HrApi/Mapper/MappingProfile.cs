@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using HrApi.Data.Models;
 using HrApi.DTO;
 using HrApi.Models;
 
@@ -12,7 +13,10 @@ namespace HrApi.Mapper
             CreateMap<Company, CompanyDTO>().ReverseMap();
 
             CreateMap<Employee, EmployeeDTO>().ReverseMap();
-           
+
+            CreateMap<Image, ImageDTO>().ReverseMap();
+
+
 
         }
     }

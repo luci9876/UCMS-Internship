@@ -18,23 +18,25 @@ namespace HrApi.Controllers
        
         private readonly IEmployeeService _employeeService;
         private readonly IMapper _mapper;
+        private readonly IMail _mail;
 
-        public EmployeesController(IEmployeeService employeeService, IMapper mapper)
+        public EmployeesController(IEmployeeService employeeService, IMapper mapper, IMail mail)
         {
            
             _employeeService = employeeService;
             _mapper = mapper;
+            _mail = mail;
         }
 
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Employee>>> GetEmployees()
+        public async Task<ActionResult<IEnumerable<EmployeeDTO>>> GetEmployees()
         {
             return Ok(_employeeService.GetEmployees());
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Employee>> GetEmployee(int id)
+        public async Task<ActionResult<EmployeeDTO>> GetEmployee(int id)
         {
             var employee = _employeeService.GetEmployee(id);
             
@@ -76,7 +78,7 @@ namespace HrApi.Controllers
             {
                 return BadRequest();
             }
-            
+            await _mail.SendWelcomeMail(employee.Email);
             return CreatedAtAction("GetEmployee", new { id = employee.Id }, employee);
         }
 

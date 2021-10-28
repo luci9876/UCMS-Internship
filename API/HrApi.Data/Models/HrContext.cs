@@ -1,12 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using HrApi.Data.Models;
 
 namespace HrApi.Models
 {
     public class HrContext : IdentityDbContext
     {
-        private  IConfiguration Configuration { get; }
+        public HrContext()
+        {
+        }
+
+        private IConfiguration Configuration { get; }
         public HrContext(DbContextOptions<HrContext> options, IConfiguration configuration) : base(options)
         {
             Configuration = configuration;
@@ -16,6 +21,7 @@ namespace HrApi.Models
         public  DbSet<CompanyEmployee> CompanyEmployee { get; set; }
         public  DbSet<AppUser> AppUsers { get; set; }
         public  DbSet<User> Users { get; set; }
+        public DbSet<Image> Images { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

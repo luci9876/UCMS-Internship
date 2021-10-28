@@ -22,6 +22,7 @@ using HrApi.Data.Models.Helpers.Interfaces;
 using HrApi.Data.Models.Helpers;
 using HrApi.Data.Models.Interfaces;
 using HrApi.Data.Models;
+using HrApi.BussinessLogic.Services.Interfaces;
 
 namespace HrApi
 {
@@ -39,11 +40,12 @@ namespace HrApi
         {
             services.AddMvc();
             services.AddSingleton<IConfiguration>(Configuration);
-            services.AddControllers(config =>
-            {
-                config.RespectBrowserAcceptHeader = true;
-                config.ReturnHttpNotAcceptable = true;
-            }).AddXmlDataContractSerializerFormatters().AddNewtonsoftJson();
+            //services.AddControllers(config =>
+            ///{
+            // config.RespectBrowserAcceptHeader = true;
+            //config.ReturnHttpNotAcceptable = true;
+            //}).AddXmlDataContractSerializerFormatters().AddNewtonsoftJson();
+            services.AddControllers();
             services.AddDbContext<HrContext>(ServiceLifetime.Transient);
             services.AddAuthentication();
             services.AddIdentityService();
@@ -55,15 +57,22 @@ namespace HrApi
 
             services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
 
+            services.AddScoped<IMail, Mail>();
+
             services.AddScoped<ICompanyRepository, CompanyRepository>();
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+
+            services.AddScoped<IImageRepository, ImageRepository>();
+
+            
+
             services.AddScoped<ValidationFilterAttribute>();
             services.AddScoped<ISortingCompanies, SortingCompanies>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<ICompanyService, CompanyService>();
             services.AddScoped<IEmployeeService, EmployeeService>();
-            services.AddDbContext<HrContext>(opt =>
-                                               opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddScoped<IImageService, ImageService>();
+            
 
             var mapperConfig = new MapperConfiguration(mc =>
             {

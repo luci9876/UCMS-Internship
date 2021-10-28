@@ -4,38 +4,22 @@ using HrApi.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HrApi.Migrations
 {
     [DbContext(typeof(HrContext))]
-    partial class HrContextModelSnapshot : ModelSnapshot
+    [Migration("20211028124145_ChangeEmployeeStructure")]
+    partial class ChangeEmployeeStructure
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.11")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("HrApi.Data.Models.Image", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<byte[]>("ImageData")
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<string>("ImageTitle")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Images");
-                });
 
             modelBuilder.Entity("HrApi.Models.AppUser", b =>
                 {
@@ -148,22 +132,22 @@ namespace HrApi.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "5ac2c727-037a-4997-93bb-4ad350512b5d",
-                            ConcurrencyStamp = "22a91750-4890-48e2-b637-945f95646401",
+                            Id = "ce8974ac-738b-4502-a010-68b484de6478",
+                            ConcurrencyStamp = "5b0aec78-37c8-42c5-99bf-de887629e2ea",
                             Name = "Member",
                             NormalizedName = "MEMBER"
                         },
                         new
                         {
-                            Id = "d962308a-1da9-4c42-9b62-a9f0073067cd",
-                            ConcurrencyStamp = "f7160a88-bb2f-42ae-9b23-a36e4557dba4",
+                            Id = "2a17018b-b1e2-4616-a136-e969dc793d60",
+                            ConcurrencyStamp = "951afa47-802c-4e03-b502-a2f7a6dc3ae8",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
-                            Id = "778bea51-932b-4d04-acf2-d2da87f3e68d",
-                            ConcurrencyStamp = "8f7ffdad-fbc6-439d-bff3-a6d42a4165ac",
+                            Id = "ef38b30a-8c6c-471f-b917-e3fbb4e41b2c",
+                            ConcurrencyStamp = "1aaf9d33-dd82-4927-8ede-6cbb26d55c56",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });
