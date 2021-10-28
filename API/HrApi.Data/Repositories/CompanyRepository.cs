@@ -31,11 +31,11 @@ namespace HrApi.Repositories
         public async Task<PagedList<Entity>> GetCompanies(CompanyParameters companyParameters)
         {
 
-            var companiesList= await HrContext.Companies.
+            var companies= (await HrContext.Companies.
                 Where(c => c.Founded >= companyParameters.MinFounded && c.Founded <= companyParameters.MaxFounded).OrderBy(c => c.Name)
                 .Skip((companyParameters.PageNumber - 1) * companyParameters.PageSize)
-                .Take(companyParameters.PageSize).ToListAsync();
-            var  companies = companiesList.AsQueryable();
+                .Take(companyParameters.PageSize).ToListAsync()).AsQueryable();
+            
             SearchByName(ref companies, companyParameters.Name);
 
             var sortedCompanies = _sortHelper.ApplySort(companies, companyParameters.OrderBy);

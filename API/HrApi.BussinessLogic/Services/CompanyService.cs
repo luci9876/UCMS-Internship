@@ -29,7 +29,7 @@ namespace HrApi.Services
             return  _companyRepository.GetCompany(id).Result;
 
         }
-        public PagedList<Entity> GetCompanies(CompanyParameters companyParameters)
+        public async Task<PagedList<Entity>> GetCompanies(CompanyParameters companyParameters)
         {
             return _companyRepository.GetCompanies(companyParameters).Result;
         }

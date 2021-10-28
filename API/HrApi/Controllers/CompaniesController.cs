@@ -40,8 +40,8 @@ namespace HrApi.Controllers
             {
                 return BadRequest($"Founding Year can't be bigger than {DateTime.Now.Year} ");
             }
-            _companyService.GetCompanies(companyParameters);
-            var companies = _companyService.GetCompanies(companyParameters);
+           
+            var companies = _companyService.GetCompanies(companyParameters).Result;
             var metadata = new
             {
                 companies.TotalCount,

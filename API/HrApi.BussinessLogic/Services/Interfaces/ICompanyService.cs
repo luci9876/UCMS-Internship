@@ -13,7 +13,7 @@ namespace HrApi.Services.Interfaces
         void AddCompany(Company company);
         Company GetCompany(int id);
         Company PutCompany(int id, Company company);
-        PagedList<Entity> GetCompanies(CompanyParameters companyParameters);
+        Task<PagedList<Entity>> GetCompanies(CompanyParameters companyParameters);
         void DeleteCompany(int id);
         IEnumerable<Employee> GetEmployeesByCompany(int id);
         CompanyEmployee PostCompanyEmployee(Company company, Employee employee);
