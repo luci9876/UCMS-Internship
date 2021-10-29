@@ -83,7 +83,7 @@ namespace HrApi.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize]
+        
         public async Task<IActionResult> DeleteEmployee(int id)
         {
 
