@@ -47,12 +47,17 @@ namespace HrApi.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult> GetImage(int id)
         {
-            var img= await _imageService.GetImage(id);
-            if (img== null)
+            var img = await _imageService.GetImage(id);
+            if (img == null)
             {
                 return NotFound();
             }
-            var  imgDTO = _mapper.Map<ImageDTO>(img);
+            var imgDTO = new
+            {
+                ImageData = Convert.ToBase64String(img.ImageData),
+                ImageTitle=img.ImageTitle,
+                Id=img.Id
+             };
             return Ok(imgDTO);
         }
     }

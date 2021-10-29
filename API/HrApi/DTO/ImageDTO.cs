@@ -8,6 +8,6 @@ namespace HrApi.DTO
     public class ImageDTO
     {
         public string ImageTitle { get; set; }
-        public byte[] ImageData { get; set; }
+        public string ImageData { get; set; }
     }
 }
