@@ -45,9 +45,9 @@ namespace HrApi.Repositories
         }
         public async Task<Entity> GetCompanyById(Guid companyId, string fields)
         {
-            var company = HrContext.Companies.Where(c => c.Id.Equals(companyId)).DefaultIfEmpty(new Company()).FirstOrDefaultAsync();
+            var company = await HrContext.Companies.Where(c => c.Id.Equals(companyId)).DefaultIfEmpty(new Company()).FirstOrDefaultAsync();
 
-            return _dataShaper.ShapeData(company.Result, fields);
+            return _dataShaper.ShapeData(company, fields);
         }
         private void SearchByName(ref IQueryable<Company> company, string companyName)
         {
@@ -90,9 +90,9 @@ namespace HrApi.Repositories
         }
         public async Task<IEnumerable<Employee>> GetEmployeesByCompany(int id)
         {
-            var results = HrContext.CompanyEmployee.Where(x => x.Company.Id == id).ToListAsync();
+            var results =await  HrContext.CompanyEmployee.Where(x => x.Company.Id == id).ToListAsync();
             var employees = new List<Employee>();
-            foreach (var result in results.Result) 
+            foreach (var result in results) 
             {
                 employees.Add(result.Employee);
             }

@@ -32,13 +32,13 @@ namespace HrApi.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<EmployeeDTO>>> GetEmployees()
         {
-            return Ok(_employeeService.GetEmployees());
+            return Ok(await _employeeService.GetEmployees());
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<EmployeeDTO>> GetEmployee(int id)
         {
-            var employee = _employeeService.GetEmployee(id);
+            var employee = await _employeeService.GetEmployee(id);
             
             if (employee == null)
             {
@@ -56,7 +56,7 @@ namespace HrApi.Controllers
 
             try
             {
-                _employeeService.PutEmployee(id, employee);
+               await  _employeeService.PutEmployee(id, employee);
             }
             catch(Exception)
             {
@@ -72,7 +72,7 @@ namespace HrApi.Controllers
             var employee = _mapper.Map<Employee>(employeeDTO);
             try
             {
-                _employeeService.AddEmployee(employee);
+                await _employeeService.AddEmployee(employee);
             }
             catch(Exception)
             {
@@ -88,7 +88,7 @@ namespace HrApi.Controllers
         {
 
             try {
-                _employeeService.DeleteEmployee(id);
+                await _employeeService.DeleteEmployee(id);
             }
             catch(Exception)
             {

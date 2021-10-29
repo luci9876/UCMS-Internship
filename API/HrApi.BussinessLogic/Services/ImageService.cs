@@ -4,6 +4,7 @@ using HrApi.Data.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace HrApi.BussinessLogic.Services.Interfaces
 {
@@ -15,16 +16,16 @@ namespace HrApi.BussinessLogic.Services.Interfaces
         {
             _imageRepository = imageRepository;
         }
-        public void AddImage(Image image)
+        public async Task AddImage(Image image)
         {
             if (image == null ) throw new Exception();
-            _imageRepository.PostImage(image);
+            await _imageRepository.PostImage(image);
 
 
         }
-        public Image GetImage(int id)
+        public async Task<Image> GetImage(int id)
         {
-            return _imageRepository.GetImage(id).Result;
+            return  await _imageRepository.GetImage(id);
 
         }
     }

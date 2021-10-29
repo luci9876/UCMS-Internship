@@ -18,35 +18,35 @@ namespace HrApi.Services
         {
             _companyRepository = companyRepository;
         }
-        public void AddCompany(Company company)
+        public async Task AddCompany(Company company)
         {
             if (company == null || string.IsNullOrWhiteSpace(company.Name)) throw new Exception();
-            _companyRepository.PostCompany(company);
+            await _companyRepository.PostCompany(company);
            
 
         }
-        public Company GetCompany(int id)
+        public async Task< Company> GetCompany(int id)
         {  
-            return  _companyRepository.GetCompany(id).Result;
+            return  await _companyRepository.GetCompany(id);
 
         }
         public async Task<PagedList<Entity>> GetCompanies(CompanyParameters companyParameters)
         {
-            return _companyRepository.GetCompanies(companyParameters).Result;
+            return  _companyRepository.GetCompanies(companyParameters).Result;
         }
-        public Company PutCompany(int id, Company company)
+        public async Task<Company> PutCompany(int id, Company company)
         {
             if (company == null || string.IsNullOrWhiteSpace(company.Name)) throw new Exception();
-            _companyRepository.PutCompany(id, company);
-            return _companyRepository.GetCompany(id).Result;
+            await _companyRepository.PutCompany(id, company);
+            return await _companyRepository.GetCompany(id);
 
 
         }
-        public void DeleteCompany(int id)
+        public async Task DeleteCompany(int id)
         {
             try
             {
-                _companyRepository.DeleteCompany(id);
+                await _companyRepository.DeleteCompany(id);
             }
             catch(Exception)
             {
@@ -54,12 +54,12 @@ namespace HrApi.Services
             }
 
         }
-        public  IEnumerable<Employee> GetEmployeesByCompany(int id) 
+        public async Task< IEnumerable<Employee>> GetEmployeesByCompany(int id) 
         {
             
             try
             {
-                var employees=  _companyRepository.GetEmployeesByCompany(id).Result.ToList();
+                var employees= await  _companyRepository.GetEmployeesByCompany(id);
                 return employees;
             }
             catch (Exception)
@@ -68,12 +68,12 @@ namespace HrApi.Services
             }
            
         }
-        public CompanyEmployee PostCompanyEmployee(Company company, Employee employee) 
+        public async Task<CompanyEmployee> PostCompanyEmployee(Company company, Employee employee) 
         {
             try
             {
-                var result=_companyRepository.PostCompanyEmployee(company,employee);
-                return result.Result;
+                var result=await _companyRepository.PostCompanyEmployee(company,employee);
+                return result;
             }
             catch (Exception)
             {

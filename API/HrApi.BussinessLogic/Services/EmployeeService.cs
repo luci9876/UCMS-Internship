@@ -3,7 +3,7 @@ using HrApi.Repositories.Interfaces;
 using HrApi.Services.Interfaces;
 using System;
 using System.Collections.Generic;
-
+using System.Threading.Tasks;
 
 namespace HrApi.Services
 {
@@ -15,35 +15,35 @@ namespace HrApi.Services
         {
             _employeeRepository = employeeRepository;
         }
-        public void AddEmployee(Employee employee)
+        public async Task AddEmployee(Employee employee)
         {
             if (employee == null || string.IsNullOrWhiteSpace(employee.FirstName)) throw new Exception();
-            _employeeRepository.PostEmployee(employee);
+            await _employeeRepository.PostEmployee(employee);
           
 
         }
-        public Employee GetEmployee(int id)
+        public async Task<Employee> GetEmployee(int id)
         {
-            return _employeeRepository.GetEmployee(id).Result;
+            return await _employeeRepository.GetEmployee(id);
 
         }
-        public IEnumerable<Employee> GetEmployees()
+        public async Task<IEnumerable<Employee>> GetEmployees()
         {
-            return _employeeRepository.GetEmployees().Result;
+            return await _employeeRepository.GetEmployees();
         }
-        public Employee PutEmployee(int id, Employee employee)
+        public async  Task<Employee> PutEmployee(int id, Employee employee)
         {
             if (employee == null || string.IsNullOrWhiteSpace(employee.FirstName)) throw new Exception();
-            _employeeRepository.PutEmployee(id, employee);
+            await _employeeRepository.PutEmployee(id, employee);
             return _employeeRepository.GetEmployee(id).Result;
 
 
         }
-        public void DeleteEmployee(int id)
+        public async Task DeleteEmployee(int id)
         {
             try
             {
-                _employeeRepository.DeleteEmployee(id);
+                await _employeeRepository.DeleteEmployee(id);
             }
             catch(Exception)
             {

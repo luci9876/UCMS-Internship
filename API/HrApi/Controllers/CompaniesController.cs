@@ -77,7 +77,7 @@ namespace HrApi.Controllers
 
             try
             {
-                _companyService.PutCompany(id, company);
+               await _companyService.PutCompany(id, company);
             }
             catch(Exception)
             {
@@ -93,7 +93,7 @@ namespace HrApi.Controllers
             var company= _mapper.Map<Company>(companyDTO);
             try
             {
-                _companyService.AddCompany(company);
+               await _companyService.AddCompany(company);
             }
             catch (Exception) 
             {
@@ -110,7 +110,7 @@ namespace HrApi.Controllers
         {
             try
             {
-                _companyService.DeleteCompany(id);
+                await _companyService.DeleteCompany(id);
             }
             catch (Exception) 
             {
@@ -124,7 +124,7 @@ namespace HrApi.Controllers
         {
             try
             {
-                var results = _companyService.GetEmployeesByCompany(id);
+                var results =await  _companyService.GetEmployeesByCompany(id);
                 return Ok(results);
             }
             catch (Exception) 
@@ -139,7 +139,7 @@ namespace HrApi.Controllers
             
             try
             {
-                _companyService.PostCompanyEmployee(companyEmployeeDTO.Company,companyEmployeeDTO.Employee);
+               await _companyService.PostCompanyEmployee(companyEmployeeDTO.Company,companyEmployeeDTO.Employee);
             }
             catch (Exception)
             {

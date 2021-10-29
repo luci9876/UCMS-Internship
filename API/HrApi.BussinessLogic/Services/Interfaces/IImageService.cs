@@ -2,12 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace HrApi.BussinessLogic.Services.Interfaces
 {
   public interface IImageService
     {
-        void AddImage(Image image);
-        Image GetImage(int id);
+        Task AddImage(Image image);
+        Task<Image> GetImage(int id);
     }
 }

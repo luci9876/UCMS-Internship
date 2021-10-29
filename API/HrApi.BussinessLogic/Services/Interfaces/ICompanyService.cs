@@ -10,12 +10,12 @@ namespace HrApi.Services.Interfaces
 {
     public interface ICompanyService
     {
-        void AddCompany(Company company);
-        Company GetCompany(int id);
-        Company PutCompany(int id, Company company);
+        Task AddCompany(Company company);
+        Task<Company> GetCompany(int id);
+        Task <Company> PutCompany(int id, Company company);
         Task<PagedList<Entity>> GetCompanies(CompanyParameters companyParameters);
-        void DeleteCompany(int id);
-        IEnumerable<Employee> GetEmployeesByCompany(int id);
-        CompanyEmployee PostCompanyEmployee(Company company, Employee employee);
+        Task DeleteCompany(int id);
+        Task<IEnumerable<Employee>> GetEmployeesByCompany(int id);
+        Task<CompanyEmployee> PostCompanyEmployee(Company company, Employee employee);
     }
 }

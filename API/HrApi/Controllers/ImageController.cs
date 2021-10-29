@@ -36,7 +36,7 @@ namespace HrApi.Controllers
                 img.ImageData = ms.ToArray();
                 try
                 {
-                    _imageService.AddImage(img);
+                   await _imageService.AddImage(img);
                 }
                 catch (Exception)
                 {
@@ -45,10 +45,9 @@ namespace HrApi.Controllers
             return Ok();
         }
         [HttpGet("{id}")]
-        public async Task<ActionResult<ImageDTO>> GetImage(int id)
+        public async Task<ActionResult> GetImage(int id)
         {
-            var img= _imageService.GetImage(id);
-
+            var img= await _imageService.GetImage(id);
             if (img== null)
             {
                 return NotFound();
