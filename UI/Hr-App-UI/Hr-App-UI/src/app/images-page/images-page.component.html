@@ -18,7 +18,14 @@
 <div class="example-button-row">
     <button (click)="loadImage()" mat-raised-button>LoadImage</button>
 
+
 </div>
 <div>
     <img [src]="base64Image" alt="Image" />
+</div>
+<div>
+    <input style="display: none" type="file" (change)="onFileChanged($event)" #fileInput>
+    <button (click)="fileInput.click()">Select File</button>
+    <h3>{{fileName}}</h3>
+    <button (click)="onUpload()">Upload</button>
 </div>

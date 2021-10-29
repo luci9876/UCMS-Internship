@@ -24,9 +24,11 @@ namespace HrApi.Controllers
             
         }
         [HttpPost]
-        public async Task<ActionResult> UploadImage( IFormFile file )
+        public async Task<ActionResult> UploadImage()
         {
-           
+
+            foreach (var file in Request.Form.Files)
+            {
                 Image img = new Image();
 
                 img.ImageTitle = file.FileName;
@@ -36,12 +38,13 @@ namespace HrApi.Controllers
                 img.ImageData = ms.ToArray();
                 try
                 {
-                   await _imageService.AddImage(img);
+                    await _imageService.AddImage(img);
                 }
                 catch (Exception)
                 {
                     return BadRequest();
                 }
+            }
             return Ok();
         }
         [HttpGet("{id}")]

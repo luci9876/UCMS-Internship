@@ -10,10 +10,10 @@ import { Image } from '../models/image';
 })
 export class ImagesServiceService {
   private baseUrl: string = `${environment.apiUrl}Image`;
-  private headers: HttpHeaders;
-
+  
+  
   constructor(private httpClient: HttpClient) {
-    this.headers = new HttpHeaders({'Content-Type': 'application/json; charset=utf-8'});
+   
    }
    public getImageById(id:number): Observable<Image> {
     return this.httpClient.get<Image>(this.baseUrl+ '/'+id);
