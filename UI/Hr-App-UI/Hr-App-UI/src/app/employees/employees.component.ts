@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Employee } from '../models/employee';
-import { EmployeeService } from '../employee.service';
+import { EmployeeService } from '../services/employee.service';
 import { EmployeeCardComponent } from '../employee-card/employee-card.component';
 
 
@@ -16,7 +16,7 @@ export class EmployeesComponent implements OnInit {
   constructor(private employeesService: EmployeeService) { }
 
   ngOnInit(): void {
-    this.currentEmployee= {id:0,firstName:" ",lastName:" " };
+    this.currentEmployee= {id:0,firstName:" ",lastName:" ",email:" " };
     this.loadEmployees();
     
   }
@@ -32,7 +32,7 @@ export class EmployeesComponent implements OnInit {
   }
   public deleteEmployee() {
     this.employeesService.delteEmployeeById(this.currentId).subscribe(() => {
-      this.currentEmployee= {id:0,firstName:" ",lastName:" " };
+      this.currentEmployee= {id:0,firstName:" ",lastName:" ",email:" "  };
       this.loadEmployees();
     })
   }

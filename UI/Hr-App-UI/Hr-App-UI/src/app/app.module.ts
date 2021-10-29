@@ -21,10 +21,11 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { TestErrorsComponent } from './test-errors/test-errors.component';
 import { ServerErrorComponent } from './server-error/server-error.component';
 import { NotFoundComponent } from './not-found/not-found.component';
-import { CompanyService } from './company.service';
-import { EmployeeService } from './employee.service';
+import { CompanyService } from './services/company.service';
+import { EmployeeService } from './services/employee.service';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
-import { AccountService } from './account.service';
+import { AccountService } from './services/account.service';
+import { ImagesPageComponent } from './images-page/images-page.component';
 
 
 @NgModule({
@@ -39,7 +40,8 @@ import { AccountService } from './account.service';
     NavbarComponent,
     TestErrorsComponent,
     ServerErrorComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    ImagesPageComponent
 
 
   ],
