@@ -4,6 +4,12 @@
   "newProjectRoot": "projects",
   "projects": {
     "Hr-App-UI": {
+		"i18n": { 
+        "sourceLocale": "en-US", 
+        "locales": { 
+          "ro": "src/app/locale/messages.ro.xlf" 
+        } 
+		},
       "projectType": "application",
       "schematics": {
         "@schematics/angular:application": {
@@ -33,6 +39,12 @@
             "scripts": []
           },
           "configurations": {
+			   "en-US": { 
+              "localize": ["en-US"] 
+            }, 
+            "ro": { 
+              "localize": ["ro"] 
+            }, 
             "production": {
               "budgets": [
                 {
@@ -68,6 +80,12 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
+			   "en-US": { 
+             "browserTarget": "Hr-App-UI:build:production:en-US"
+            }, 
+            "ro": { 
+              "browserTarget": "Hr-App-UI:build:production:ro"
+            }, 
             "production": {
               "browserTarget": "Hr-App-UI:build:production"
             },

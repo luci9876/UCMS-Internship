@@ -1,28 +1,46 @@
 <mat-toolbar color="primary">
     <mat-toolbar-row>
         <span class="menu-spacer">HR App</span>
-        <a mat-button routerLink="/">Home</a>
-        <a mat-button routerLink="/register">Register</a>
+        <a mat-button routerLink="/" i18n="@@Home">{{'Home'|translate}}</a>
+        <a mat-button routerLink="/register" i18n="@@Register">{{'Register'|translate}}</a>
     </mat-toolbar-row>
     <mat-toolbar-row class="login-form">
         <div *ngIf="(accountService.currentUser$ | async) as user" class="dropdown" dropdown>
-            <p>Welcome {{user.userName | titlecase}}</p>
-            <button (click)="logout()" mat-raised-button>LOGOUT</button>
+            <p i18n="@@Welcome">{{'Welcome'|translate}} {{user.userName | titlecase}}</p>
+            <button (click)="logout()" mat-raised-button i18n="@@Logout">{{'LOGOUT'|translate}}</button>
         </div>
 
         <form *ngIf="(accountService.currentUser$ | async) === undefined || (accountService.currentUser$ | async) === null" [formGroup]="loginForm" class="login-form" (ngSubmit)="loginForm.valid && login()" autocomplete="off">
             <mat-form-field class="full-width">
-                <mat-label>User Name</mat-label>
-                <input matInput placeholder="User Name" formControlName="username" required>
+                <mat-label i18n="@@Username">{{'User name'|translate}}</mat-label>
+                <input matInput placeholder="User name" formControlName="username" required>
             </mat-form-field>
             <mat-form-field class="full-width">
-                <mat-label>Password</mat-label>
+                <mat-label i18n="@@Password">{{'Password'|translate}}</mat-label>
                 <input matInput placeholder="Password" formControlName="password" required type="password">
             </mat-form-field>
-            <button (click)="login()" mat-raised-button>Login</button>
+            <button (click)="login()" mat-raised-button i18n="@@Login">{{'Login'|translate}}</button>
         </form>
     </mat-toolbar-row>
     <mat-toolbar-row>
-        <span style="font-size: 12px;">HR App</span>
+        <div class="lang-picker">
+            <div *ngFor="let locale of locales">
+                <a style="color: black;" href="/{{ locale.localeCode }}/">
+                {{ locale.label }}
+              </a>
+            </div>
+        </div>
+        <span class="form-inline">
+            <select 
+                class="form-control" 
+                #selectedLang 
+                (change)="switchLang(selectedLang.value)">
+              <option *ngFor="let language of translate.getLangs()" 
+                [value]="language"
+                [selected]="language === translate.currentLang">
+                {{ language }}
+              </option>
+            </select>
+          </span>
     </mat-toolbar-row>
 </mat-toolbar>

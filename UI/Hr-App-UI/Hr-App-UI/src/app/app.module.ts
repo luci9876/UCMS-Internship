@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import {  HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppRoutingModule, routingComponents } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -27,6 +27,9 @@ import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { AccountService } from './services/account.service';
 import { ImagesPageComponent } from './images-page/images-page.component';
 import { WelcomeComponent } from './welcome/welcome.component';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -59,9 +62,15 @@ import { WelcomeComponent } from './welcome/welcome.component';
     MatButtonModule,
     RouterModule,
     MatToolbarModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: httpTranslateLoader,
+        deps: [HttpClient]
+      }
+    })
   ],
-
   providers: [
     CompanyService,
     EmployeeService,
@@ -75,3 +84,7 @@ import { WelcomeComponent } from './welcome/welcome.component';
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+export function httpTranslateLoader(http: HttpClient) {
+  return new TranslateHttpLoader(http);
+}
