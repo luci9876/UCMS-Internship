@@ -7,6 +7,6 @@ namespace HrApi.Services.Interfaces
 {
     public interface IMail
     {
-         Task SendWelcomeMail(String email);
+         Task SendWelcomeMail(String email, byte[] url, String firstname, String lastname);
     }
 }

@@ -26,6 +26,7 @@ import { EmployeeService } from './services/employee.service';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { AccountService } from './services/account.service';
 import { ImagesPageComponent } from './images-page/images-page.component';
+import { WelcomeComponent } from './welcome/welcome.component';
 
 
 @NgModule({
@@ -41,7 +42,8 @@ import { ImagesPageComponent } from './images-page/images-page.component';
     TestErrorsComponent,
     ServerErrorComponent,
     NotFoundComponent,
-    ImagesPageComponent
+    ImagesPageComponent,
+    WelcomeComponent
 
 
   ],

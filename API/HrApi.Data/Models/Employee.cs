@@ -1,4 +1,5 @@
 ﻿
+using HrApi.Data.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace HrApi.Models
@@ -12,5 +13,6 @@ namespace HrApi.Models
         public string LastName { get; set; }
         [Required]
         public string Email { get; set; }
+        public Image Image { get; set; }
     }
 }

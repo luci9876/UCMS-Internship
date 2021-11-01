@@ -21,48 +21,45 @@ namespace HrApi.Controllers
 
             _imageService = imageService;
             _mapper = mapper;
-            
+
         }
         [HttpPost]
-        public async Task<ActionResult> UploadImage()
+        public async Task<ActionResult<int>> UploadImage()
         {
-
-            foreach (var file in Request.Form.Files)
+            
+            var file = Request.Form.Files[0];
+            Image img = new Image();
+            img.ImageTitle = file.FileName;
+            MemoryStream ms = new MemoryStream();
+            file.CopyTo(ms);
+            img.ImageData = ms.ToArray();
+            try
             {
-                Image img = new Image();
-
-                img.ImageTitle = file.FileName;
-
-                MemoryStream ms = new MemoryStream();
-                file.CopyTo(ms);
-                img.ImageData = ms.ToArray();
-                try
-                {
-                    await _imageService.AddImage(img);
-                }
-                catch (Exception)
-                {
-                    return BadRequest();
-                }
+               int id = await _imageService.AddImage(img);
+               return Ok(id);
             }
-            return Ok();
-        }
-        [HttpGet("{id}")]
-        public async Task<ActionResult> GetImage(int id)
-        {
-            var img = await _imageService.GetImage(id);
-            if (img == null)
+            catch (Exception)
             {
-                return NotFound();
+                return BadRequest();
             }
-            var imgDTO = new
-            {
-                ImageData = Convert.ToBase64String(img.ImageData),
-                ImageTitle=img.ImageTitle,
-                Id=img.Id
-             };
-            return Ok(imgDTO);
-        }
+            
     }
+    [HttpGet("{id}")]
+    public async Task<ActionResult> GetImage(int id)
+    {
+        var img = await _imageService.GetImage(id);
+        if (img == null)
+        {
+            return NotFound();
+        }
+        var imgDTO = new
+        {
+            ImageData = Convert.ToBase64String(img.ImageData),
+            ImageTitle = img.ImageTitle,
+            Id = img.Id
+        };
+        return Ok(imgDTO);
+    }
+}
     }
 

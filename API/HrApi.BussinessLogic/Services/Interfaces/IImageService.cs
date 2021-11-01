@@ -8,7 +8,7 @@ namespace HrApi.BussinessLogic.Services.Interfaces
 {
   public interface IImageService
     {
-        Task AddImage(Image image);
+        Task<int> AddImage(Image image);
         Task<Image> GetImage(int id);
     }
 }

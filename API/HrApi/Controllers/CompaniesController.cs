@@ -41,7 +41,7 @@ namespace HrApi.Controllers
                 return BadRequest($"Founding Year can't be bigger than {DateTime.Now.Year} ");
             }
            
-            var companies = _companyService.GetCompanies(companyParameters).Result;
+            var companies = await _companyService.GetCompanies(companyParameters);
             var metadata = new
             {
                 companies.TotalCount,
@@ -60,7 +60,7 @@ namespace HrApi.Controllers
 
         public async Task<ActionResult<CompanyDTO>> GetCompany(int id)
         {
-            var company= _companyService.GetCompany(id);
+            var company=await _companyService.GetCompany(id);
             if (company == null)
             {
                 return NotFound();

@@ -21,11 +21,11 @@ namespace HrApi.Data.Repositories
         {
             get { return Context; }
         }
-        public async Task PostImage(Image image)
+        public async Task<int> PostImage(Image image)
         {
             await HrContext.Images.AddAsync(image);
             await HrContext.SaveChangesAsync();
-           
+            return image.Id;
 
         }
         public async Task<Image> GetImage(int id)

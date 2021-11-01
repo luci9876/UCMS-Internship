@@ -7,8 +7,9 @@
     <mat-toolbar-row class="login-form">
         <div *ngIf="(accountService.currentUser$ | async) as user" class="dropdown" dropdown>
             <p>Welcome {{user.userName | titlecase}}</p>
-            <button click="logout()" mat-raised-button>LOGOUT</button>
+            <button (click)="logout()" mat-raised-button>LOGOUT</button>
         </div>
+
         <form *ngIf="(accountService.currentUser$ | async) === undefined || (accountService.currentUser$ | async) === null" [formGroup]="loginForm" class="login-form" (ngSubmit)="loginForm.valid && login()" autocomplete="off">
             <mat-form-field class="full-width">
                 <mat-label>User Name</mat-label>

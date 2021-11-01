@@ -8,6 +8,8 @@ using HrApi.DTO;
 using AutoMapper;
 using System.Threading.Tasks;
 using System;
+using HrApi.Data.Models;
+using HrApi.BussinessLogic.Services.Interfaces;
 
 namespace HrApi.Controllers
 {
@@ -19,6 +21,7 @@ namespace HrApi.Controllers
         private readonly IEmployeeService _employeeService;
         private readonly IMapper _mapper;
         private readonly IMail _mail;
+       
 
         public EmployeesController(IEmployeeService employeeService, IMapper mapper, IMail mail)
         {
@@ -72,13 +75,15 @@ namespace HrApi.Controllers
             var employee = _mapper.Map<Employee>(employeeDTO);
             try
             {
+                
                 await _employeeService.AddEmployee(employee);
             }
             catch(Exception)
             {
                 return BadRequest();
             }
-            await _mail.SendWelcomeMail(employee.Email);
+            
+           await _mail.SendWelcomeMail(employee.Email, employee.Image.ImageData,employee.FirstName,employee.LastName);
             return CreatedAtAction("GetEmployee", new { id = employee.Id }, employee);
         }
 

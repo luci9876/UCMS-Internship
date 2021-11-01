@@ -16,10 +16,10 @@ namespace HrApi.BussinessLogic.Services.Interfaces
         {
             _imageRepository = imageRepository;
         }
-        public async Task AddImage(Image image)
+        public async Task<int> AddImage(Image image)
         {
             if (image == null ) throw new Exception();
-            await _imageRepository.PostImage(image);
+            return await _imageRepository.PostImage(image);
 
 
         }

@@ -4,14 +4,16 @@ using HrApi.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HrApi.Migrations
 {
     [DbContext(typeof(HrContext))]
-    partial class HrContextModelSnapshot : ModelSnapshot
+    [Migration("20211101085740_addedImage")]
+    partial class addedImage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -71,16 +73,11 @@ namespace HrApi.Migrations
                     b.Property<int>("Founded")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ImageId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ImageId");
 
                     b.ToTable("Companies");
                 });
@@ -158,22 +155,22 @@ namespace HrApi.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "9757e4ba-2ddc-4c47-93db-5271edf2ddad",
-                            ConcurrencyStamp = "d93cf078-c44a-4625-a06a-693d9688a7a9",
+                            Id = "91c79490-7f54-4e92-85b5-5f3733f17bd9",
+                            ConcurrencyStamp = "74c3e829-5c31-44b6-861d-92d9c1be5d05",
                             Name = "Member",
                             NormalizedName = "MEMBER"
                         },
                         new
                         {
-                            Id = "f34e3d08-6ece-4a2b-99dc-7cef86046089",
-                            ConcurrencyStamp = "bc5f102e-635d-439a-91f8-529971c08634",
+                            Id = "b96439ae-9238-476a-ab4c-5d4a10583143",
+                            ConcurrencyStamp = "184978d6-555e-48bd-9aae-9d38d61c967c",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
-                            Id = "fb4b65fe-691e-40f7-a5b2-5e503cae3b17",
-                            ConcurrencyStamp = "5162e2ec-014f-4632-afa8-e33a385b3f9c",
+                            Id = "03ac84b6-c933-4470-a040-88bcaf575af9",
+                            ConcurrencyStamp = "5c2df4c6-a33d-4441-bbf4-fdfb350e68d9",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });
@@ -365,15 +362,6 @@ namespace HrApi.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasDiscriminator().HasValue("User");
-                });
-
-            modelBuilder.Entity("HrApi.Models.Company", b =>
-                {
-                    b.HasOne("HrApi.Data.Models.Image", "Image")
-                        .WithMany()
-                        .HasForeignKey("ImageId");
-
-                    b.Navigation("Image");
                 });
 
             modelBuilder.Entity("HrApi.Models.CompanyEmployee", b =>

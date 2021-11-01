@@ -5,7 +5,7 @@ namespace HrApi.Data.Repositories.Interfaces
 {
     public interface IImageRepository
     {
-         Task PostImage(Image image);
+         Task<int> PostImage(Image image);
          Task<Image> GetImage(int id);
     }
 }

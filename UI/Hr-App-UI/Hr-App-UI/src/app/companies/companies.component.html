@@ -4,10 +4,10 @@
 </div>
 <h2 style="text-align: center;">Operations</h2>
 <form class="example-form">
-    <mat-form-field class="example-full-width" appearance="fill">
+    <!-- <mat-form-field class="example-full-width" appearance="fill">
         <mat-label>ID</mat-label>
         <input matInput placeholder="ID:" [(ngModel)]="currentId" [ngModelOptions]="{standalone: true}">
-    </mat-form-field>
+    </mat-form-field> -->
 
     <mat-form-field class="example-full-width" appearance="fill">
         <mat-label>Name</mat-label>
@@ -17,10 +17,15 @@
         <mat-label>Description</mat-label>
         <input matInput placeholder="A company..." [(ngModel)]="currentCompany.description" [ngModelOptions]="{standalone: true}">
     </mat-form-field>
+    <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Founding Year</mat-label>
+        <input matInput placeholder="1900..." [(ngModel)]="currentCompany.founded" [ngModelOptions]="{standalone: true}">
+    </mat-form-field>
+
 </form>
 <div class="example-button-row">
-    <button (click)="loadCompany()" mat-raised-button>Get</button>
-    <button (click)="addCompany()" mat-raised-button color="primary">Post</button>
-    <button (click)="editCompany()" mat-raised-button color="accent">Put</button>
-    <button (click)="deleteCompany()" mat-raised-button color="warn">Delete</button>
+    <!-- <button (click)="loadCompany()" mat-raised-button>Get</button> -->
+    <button (click)="addCompany()" mat-raised-button color="primary">Add a Company</button>
+    <!-- <button (click)="editCompany()" mat-raised-button color="accent">Put</button>
+    <button (click)="deleteCompany()" mat-raised-button color="warn">Delete</button> -->
 </div>

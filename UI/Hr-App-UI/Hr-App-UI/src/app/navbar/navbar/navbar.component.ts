@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AccountService } from '../../services/account.service';
 import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { Location } from '@angular/common';
 
 
 @Component({
@@ -25,13 +26,13 @@ export class NavbarComponent implements OnInit {
   }
   public login() {
     this.accountService.login(this.loginForm.value).subscribe(() => {
-      this.router.navigateByUrl("/companies");
+      this.router.navigateByUrl("/welcome");
     });
 
   }
   public logout() {
     this.accountService.logout();
-    this.router.navigateByUrl("/companies");
+    this.router.navigateByUrl("/");
   }
 
 }

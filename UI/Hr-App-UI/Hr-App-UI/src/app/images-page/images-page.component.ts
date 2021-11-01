@@ -1,4 +1,3 @@
-import { ThisReceiver } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 import { Image } from '../models/image';
 import { ImagesServiceService } from '../services/images-service.service';
@@ -18,7 +17,6 @@ export class ImagesPageComponent implements OnInit {
   public base64Image: SafeUrl;
   private selectedFile: File
   private baseUrl: string = `${environment.apiUrl}Image`;
-  //private headers: HttpHeaders;
   public fileName:string;
 
 
@@ -54,11 +52,9 @@ export class ImagesPageComponent implements OnInit {
     }
     if(exists)
     {
-     
     const uploadFile = new FormData();
-    //this.headers=new HttpHeaders({'Content-Type': 'multipart/form-data','Accept': '*/*'});
     uploadFile.append('myFile', this.selectedFile, this.selectedFile.name);
-    this.http.post(this.baseUrl, uploadFile)
+    this.http.post(this.baseUrl,uploadFile,)
       .subscribe(res=>{
         console.log(res);
       });
