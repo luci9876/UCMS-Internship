@@ -23,13 +23,7 @@
         </form>
     </mat-toolbar-row>
     <mat-toolbar-row>
-        <div class="lang-picker">
-            <div *ngFor="let locale of locales">
-                <a style="color: black;" href="/{{ locale.localeCode }}/">
-                {{ locale.label }}
-              </a>
-            </div>
-        </div>
+
         <span class="form-inline">
             <select 
                 class="form-control" 

@@ -8,7 +8,7 @@
         <mat-label>ID</mat-label>
         <input matInput placeholder="ID:" [(ngModel)]="currentId" [ngModelOptions]="{standalone: true}">
     </mat-form-field> -->
-
+    <img [src]="base64Image" alt="User image" width="500px" height="300px" />
     <mat-form-field class="example-full-width" appearance="fill">
         <mat-label>FirstName</mat-label>
         <input matInput placeholder="John" [(ngModel)]="currentEmployee.firstName" [ngModelOptions]="{standalone: true}">
@@ -21,12 +21,20 @@
         <mat-label>Email</mat-label>
         <input matInput placeholder="john.doe@host.com" [(ngModel)]="currentEmployee.email" [ngModelOptions]="{standalone: true}">
     </mat-form-field>
+
 </form>
+
 <div class="example-button-row">
     <!-- <button (click)="loadEmployee()" mat-raised-button>Get</button> -->
     <button (click)="addEmployee()" mat-raised-button color="primary">Add an Employee</button>
     <!-- <button (click)="editEmployee()" mat-raised-button color="accent">Put</button>
     <button (click)="deleteEmployee()" mat-raised-button color="warn">Delete</button> -->
+
+</div>
+<div>
+    <input style="display: none" type="file" (change)="onFileChanged($event)" #fileInput>
+    <button (click)="fileInput.click()">Select File</button>
+    <h3>{{fileName}}</h3>
 </div>
 <!-- <mat-form-field>
             <mat-select (selectionChange)="OnSelectionChanged($event) " multiple placeholder="Product ">

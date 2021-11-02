@@ -8,7 +8,7 @@
         <mat-label>ID</mat-label>
         <input matInput placeholder="ID:" [(ngModel)]="currentId" [ngModelOptions]="{standalone: true}">
     </mat-form-field> -->
-
+    <img [src]="base64Image" alt="Logo" width="500px" height="300px" />
     <mat-form-field class="example-full-width" appearance="fill">
         <mat-label>Name</mat-label>
         <input matInput placeholder="Google" [(ngModel)]="currentCompany.name" [ngModelOptions]="{standalone: true}">
@@ -23,9 +23,15 @@
     </mat-form-field>
 
 </form>
+
 <div class="example-button-row">
     <!-- <button (click)="loadCompany()" mat-raised-button>Get</button> -->
     <button (click)="addCompany()" mat-raised-button color="primary">Add a Company</button>
     <!-- <button (click)="editCompany()" mat-raised-button color="accent">Put</button>
     <button (click)="deleteCompany()" mat-raised-button color="warn">Delete</button> -->
+</div>
+<div>
+    <input style="display: none" type="file" (change)="onFileChanged($event)" #fileInput>
+    <button (click)="fileInput.click()">Select a photo</button>
+    <h3>{{fileName}}</h3>
 </div>
