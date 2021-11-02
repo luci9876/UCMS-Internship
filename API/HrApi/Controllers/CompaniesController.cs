@@ -11,6 +11,7 @@ using HrApi.Sorting;
 using HrApi.Services.Interfaces;
 using AutoMapper;
 using HrApi.DTO;
+using HrApi.Sorting.Interfaces;
 
 namespace HrApi.Controllers
 {
@@ -19,11 +20,11 @@ namespace HrApi.Controllers
     public class CompaniesController : ControllerBase
     {
         
-        private readonly SortingCompanies _sorting;
+        private readonly ISortingCompanies _sorting;
         private readonly ICompanyService _companyService;
         private readonly IMapper _mapper;
 
-        public CompaniesController(SortingCompanies sorting,ICompanyService companyService, IMapper mapper)
+        public CompaniesController(ISortingCompanies sorting,ICompanyService companyService, IMapper mapper)
         {
            
             _sorting = sorting;
@@ -39,24 +40,19 @@ namespace HrApi.Controllers
             {
                 return BadRequest($"Founding Year can't be bigger than {DateTime.Now.Year} ");
             }
-            _companyService.GetCompanies(companyParameters);
-            var companies = _companyService.GetCompanies(companyParameters).AsQueryable();
-
-            _sorting.SearchByName(ref companies, companyParameters.Name);
-            _sorting.ApplySort(ref companies, companyParameters.OrderBy);
-
-            var companiesPagination = PagedList<Company>.ToPagedList(companies, companyParameters.PageNumber, companyParameters.PageSize);
+           
+            var companies = await _companyService.GetCompanies(companyParameters);
             var metadata = new
             {
-                companiesPagination.TotalCount,
-                companiesPagination.PageSize,
-                companiesPagination.CurrentPage,
-                companiesPagination.TotalPages,
-                companiesPagination.HasNext,
-                companiesPagination.HasPrevious
+                companies.TotalCount,
+                companies.PageSize,
+                companies.CurrentPage,
+                companies.TotalPages,
+                companies.HasNext,
+                companies.HasPrevious
             };
             Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
-            return Ok(companiesPagination);
+            return Ok(companies);
         }
 
 
@@ -64,7 +60,7 @@ namespace HrApi.Controllers
 
         public async Task<ActionResult<CompanyDTO>> GetCompany(int id)
         {
-            var company= _companyService.GetCompany(id);
+            var company=await _companyService.GetCompany(id);
             if (company == null)
             {
                 return NotFound();
@@ -81,11 +77,11 @@ namespace HrApi.Controllers
 
             try
             {
-                _companyService.PutCompany(id, company);
+               await _companyService.PutCompany(id, company);
             }
-            catch(Exception)
+            catch(Exception ex)
             {
-                return NotFound();
+                return NotFound(ex.Message);
             }
             return NoContent();
         }
@@ -97,7 +93,7 @@ namespace HrApi.Controllers
             var company= _mapper.Map<Company>(companyDTO);
             try
             {
-                _companyService.AddCompany(company);
+               await _companyService.AddCompany(company);
             }
             catch (Exception) 
             {
@@ -114,7 +110,7 @@ namespace HrApi.Controllers
         {
             try
             {
-                _companyService.DeleteCompany(id);
+                await _companyService.DeleteCompany(id);
             }
             catch (Exception) 
             {
@@ -122,6 +118,39 @@ namespace HrApi.Controllers
             }
             return NoContent();
         }
+
+        [HttpGet("employees-by-company/{id}")]
+        public async Task<ActionResult<IEnumerable<Employee>>> GetCompanyEmployee(int id)
+        {
+            try
+            {
+                var results =await  _companyService.GetEmployeesByCompany(id);
+                return Ok(results);
+            }
+            catch (Exception) 
+            {
+                return BadRequest();
+            }
+            
+        }
+        [HttpPost("employees-at-company")]
+        public async Task<ActionResult<Company>> PostCompany(CompanyEmployeeDTO companyEmployeeDTO)
+        {
+            
+            try
+            {
+               await _companyService.PostCompanyEmployee(companyEmployeeDTO.Company,companyEmployeeDTO.Employee);
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+
+
+            return CreatedAtAction("Company&Employee", new { companyId = companyEmployeeDTO.Company.Id , employeeId = companyEmployeeDTO.Employee.Id} );
+        }
+
+
         [HttpGet("division-by-zero")]
         public IActionResult DivisionByzero()
         {

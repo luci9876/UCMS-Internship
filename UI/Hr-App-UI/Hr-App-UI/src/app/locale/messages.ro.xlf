@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en-US" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="Home" datatype="html">
+        <source>Home</source>
+        <target>Acasa</target>
+      </trans-unit>
+      <trans-unit id="Register" datatype="html">
+        <source>Register</source>
+        <target>Inregistrare</target>
+      </trans-unit>
+      <trans-unit id="Welcome" datatype="html">
+        <source>Welcome <x id="INTERPOLATION" equiv-text="{{user.userName | titlecase}}"/></source>
+        <target>Bun venit <x id="INTERPOLATION" equiv-text="{{user.userName | titlecase}}"/></target>
+      </trans-unit>
+      <trans-unit id="Logout" datatype="html">
+        <source>LOGOUT</source>
+       <target>Deconectare</target>
+      </trans-unit>
+      <trans-unit id="Username" datatype="html">
+        <source>User Name</source>
+        <target>Utilizator</target>
+      </trans-unit>
+      <trans-unit id="Password" datatype="html">
+        <source>Password</source>
+         <target>Parola</target>
+      </trans-unit>
+      <trans-unit id="Login" datatype="html">
+        <source>Login</source>
+       <target>Logare</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

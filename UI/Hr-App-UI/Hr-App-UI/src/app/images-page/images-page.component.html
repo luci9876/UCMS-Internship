@@ -1,0 +1,31 @@
+<h2 style="text-align: center;">Operations on Images</h2>
+<form class="example-form">
+    <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>ID</mat-label>
+        <input matInput placeholder="ID:" [(ngModel)]="currentId" [ngModelOptions]="{standalone: true}">
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Title</mat-label>
+        <input matInput placeholder="Title" [(ngModel)]="currentImage.imageTitle" [ngModelOptions]="{standalone: true}">
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Data</mat-label>
+        <input matInput placeholder="Data" [(ngModel)]="currentImage.imageData" [ngModelOptions]="{standalone: true}">
+    </mat-form-field>
+</form>
+<div class="example-button-row">
+    <button (click)="loadImage()" mat-raised-button>LoadImage</button>
+
+
+</div>
+<div>
+    <img [src]="base64Image" alt="Image" width="500px" height="300px" />
+</div>
+<div>
+    <input style="display: none" type="file" (change)="onFileChanged($event)" #fileInput>
+    <button (click)="fileInput.click()">Select File</button>
+    <h3>{{fileName}}</h3>
+    <button (click)="onUpload()">Upload</button>
+</div>

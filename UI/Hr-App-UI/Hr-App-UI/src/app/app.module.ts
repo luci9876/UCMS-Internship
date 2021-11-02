@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import {  HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppRoutingModule, routingComponents } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -21,10 +21,15 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { TestErrorsComponent } from './test-errors/test-errors.component';
 import { ServerErrorComponent } from './server-error/server-error.component';
 import { NotFoundComponent } from './not-found/not-found.component';
-import { CompanyService } from './company.service';
-import { EmployeeService } from './employee.service';
+import { CompanyService } from './services/company.service';
+import { EmployeeService } from './services/employee.service';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
-import { AccountService } from './account.service';
+import { AccountService } from './services/account.service';
+import { ImagesPageComponent } from './images-page/images-page.component';
+import { WelcomeComponent } from './welcome/welcome.component';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -39,7 +44,9 @@ import { AccountService } from './account.service';
     NavbarComponent,
     TestErrorsComponent,
     ServerErrorComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    ImagesPageComponent,
+    WelcomeComponent
 
 
   ],
@@ -55,9 +62,15 @@ import { AccountService } from './account.service';
     MatButtonModule,
     RouterModule,
     MatToolbarModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: httpTranslateLoader,
+        deps: [HttpClient]
+      }
+    })
   ],
-
   providers: [
     CompanyService,
     EmployeeService,
@@ -71,3 +84,7 @@ import { AccountService } from './account.service';
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+export function httpTranslateLoader(http: HttpClient) {
+  return new TranslateHttpLoader(http);
+}

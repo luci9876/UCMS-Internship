@@ -3,7 +3,7 @@ import { HttpEvent, HttpRequest, HttpHandler, HttpInterceptor, HttpErrorResponse
 import { Observable, throwError } from "rxjs";
 import { User } from "../models/user";
 import { catchError, take } from 'rxjs/operators';
-import { AccountService } from '../account.service';
+import { AccountService } from '../services/account.service';
 import { ActivatedRoute, Router } from "@angular/router";
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {

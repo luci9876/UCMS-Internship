@@ -14,6 +14,16 @@ using HrApi.Mapper;
 using HrApi.Services.Interfaces;
 using HrApi.Repositories.Interfaces;
 using HrApi.Repositories;
+using HrApi.Sorting;
+using HrApi.Sorting.Interfaces;
+using HrApi.Data.Repositories.Interfaces;
+using HrApi.Data.Repositories;
+using HrApi.Data.Models.Helpers.Interfaces;
+using HrApi.Data.Models.Helpers;
+using HrApi.Data.Models.Interfaces;
+using HrApi.Data.Models;
+using HrApi.BussinessLogic.Services.Interfaces;
+using System.Text.Json;
 
 namespace HrApi
 {
@@ -31,19 +41,44 @@ namespace HrApi
         {
             services.AddMvc();
             services.AddSingleton<IConfiguration>(Configuration);
+            //services.AddControllers(config =>
+            ///{
+            // config.RespectBrowserAcceptHeader = true;
+            //config.ReturnHttpNotAcceptable = true;
+            //}).AddXmlDataContractSerializerFormatters().AddNewtonsoftJson();
             services.AddControllers();
             services.AddDbContext<HrContext>(ServiceLifetime.Transient);
             services.AddAuthentication();
             services.AddIdentityService();
             services.AddJwtToken(Configuration);
+
+            services.AddScoped<ISortHelper<Company>, SortHelper<Company>>();
+
+            services.AddScoped<IDataShaper<Company>, DataShaper<Company>>();
+
+            services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
+
+            services.AddScoped<IMail, Mail>();
+
             services.AddScoped<ICompanyRepository, CompanyRepository>();
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+
+            services.AddScoped<IImageRepository, ImageRepository>();
+
+            
+
             services.AddScoped<ValidationFilterAttribute>();
+            services.AddScoped<ISortingCompanies, SortingCompanies>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<ICompanyService, CompanyService>();
             services.AddScoped<IEmployeeService, EmployeeService>();
-            services.AddDbContext<HrContext>(opt =>
-                                               opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddScoped<IImageService, ImageService>();
+
+            services.AddRazorPages().AddJsonOptions(o =>
+            {
+                o.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+                o.JsonSerializerOptions.DictionaryKeyPolicy = JsonNamingPolicy.CamelCase;
+            });
 
             var mapperConfig = new MapperConfiguration(mc =>
             {

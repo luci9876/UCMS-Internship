@@ -8,6 +8,8 @@ using HrApi.DTO;
 using AutoMapper;
 using System.Threading.Tasks;
 using System;
+using HrApi.Data.Models;
+using HrApi.BussinessLogic.Services.Interfaces;
 
 namespace HrApi.Controllers
 {
@@ -18,25 +20,28 @@ namespace HrApi.Controllers
        
         private readonly IEmployeeService _employeeService;
         private readonly IMapper _mapper;
+        private readonly IMail _mail;
+       
 
-        public EmployeesController(IEmployeeService employeeService, IMapper mapper)
+        public EmployeesController(IEmployeeService employeeService, IMapper mapper, IMail mail)
         {
            
             _employeeService = employeeService;
             _mapper = mapper;
+            _mail = mail;
         }
 
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Employee>>> GetEmployees()
+        public async Task<ActionResult<IEnumerable<EmployeeDTO>>> GetEmployees()
         {
-            return Ok(_employeeService.GetEmployees());
+            return Ok(await _employeeService.GetEmployees());
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Employee>> GetEmployee(int id)
+        public async Task<ActionResult<EmployeeDTO>> GetEmployee(int id)
         {
-            var employee = _employeeService.GetEmployee(id);
+            var employee = await _employeeService.GetEmployee(id);
             
             if (employee == null)
             {
@@ -54,7 +59,7 @@ namespace HrApi.Controllers
 
             try
             {
-                _employeeService.PutEmployee(id, employee);
+               await  _employeeService.PutEmployee(id, employee);
             }
             catch(Exception)
             {
@@ -70,23 +75,25 @@ namespace HrApi.Controllers
             var employee = _mapper.Map<Employee>(employeeDTO);
             try
             {
-                _employeeService.AddEmployee(employee);
+                
+                await _employeeService.AddEmployee(employee);
             }
             catch(Exception)
             {
                 return BadRequest();
             }
             
+           await _mail.SendWelcomeMail(employee.Email, employee.Image.ImageData,employee.FirstName,employee.LastName);
             return CreatedAtAction("GetEmployee", new { id = employee.Id }, employee);
         }
 
         [HttpDelete("{id}")]
-        [Authorize]
+        
         public async Task<IActionResult> DeleteEmployee(int id)
         {
 
             try {
-                _employeeService.DeleteEmployee(id);
+                await _employeeService.DeleteEmployee(id);
             }
             catch(Exception)
             {

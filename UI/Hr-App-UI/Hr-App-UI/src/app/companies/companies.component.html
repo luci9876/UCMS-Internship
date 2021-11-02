@@ -1,14 +1,14 @@
 <h1 style="text-align: center;">List of companies</h1>
 <div *ngFor="let company of companies">
-    <app-company-card [company]="company" (selectionChange)="onItemSelected()"></app-company-card>
+    <app-company-card [company]="company" (click)="onItemSelected(company)"></app-company-card>
 </div>
 <h2 style="text-align: center;">Operations</h2>
 <form class="example-form">
-    <mat-form-field class="example-full-width" appearance="fill">
+    <!-- <mat-form-field class="example-full-width" appearance="fill">
         <mat-label>ID</mat-label>
         <input matInput placeholder="ID:" [(ngModel)]="currentId" [ngModelOptions]="{standalone: true}">
-    </mat-form-field>
-
+    </mat-form-field> -->
+    <img [src]="base64Image" alt="Logo" width="500px" height="300px" />
     <mat-form-field class="example-full-width" appearance="fill">
         <mat-label>Name</mat-label>
         <input matInput placeholder="Google" [(ngModel)]="currentCompany.name" [ngModelOptions]="{standalone: true}">
@@ -17,10 +17,21 @@
         <mat-label>Description</mat-label>
         <input matInput placeholder="A company..." [(ngModel)]="currentCompany.description" [ngModelOptions]="{standalone: true}">
     </mat-form-field>
+    <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Founding Year</mat-label>
+        <input matInput placeholder="1900..." [(ngModel)]="currentCompany.founded" [ngModelOptions]="{standalone: true}">
+    </mat-form-field>
+
 </form>
+
 <div class="example-button-row">
-    <button (click)="loadCompany()" mat-raised-button>Get</button>
-    <button (click)="addCompany()" mat-raised-button color="primary">Post</button>
-    <button (click)="editCompany()" mat-raised-button color="accent">Put</button>
-    <button (click)="deleteCompany()" mat-raised-button color="warn">Delete</button>
+    <!-- <button (click)="loadCompany()" mat-raised-button>Get</button> -->
+    <button (click)="addCompany()" mat-raised-button color="primary">Add a company</button>
+    <button (click)="editCompany()" mat-raised-button color="accent">Save changes</button>
+    <button (click)="deleteCompany()" mat-raised-button color="warn">Delete company</button>
+    <input style="display: none" type="file" (change)="onFileChanged($event)" #fileInput>
+    <button (click)="fileInput.click()" mat-raised-button>Select a photo</button>
+</div>
+<div>
+    <h3>{{fileName}}</h3>
 </div>

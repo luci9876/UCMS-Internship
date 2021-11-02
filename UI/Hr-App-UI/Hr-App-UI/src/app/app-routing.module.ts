@@ -7,6 +7,10 @@ import { RegisterComponent } from './register/register/register.component';
 import { TestErrorsComponent } from './test-errors/test-errors.component';
 import { ServerErrorComponent } from './server-error/server-error.component';
 import { NotFoundComponent } from './not-found/not-found.component'; 
+import { ImagesPageComponent } from './images-page/images-page.component';
+import { WelcomeComponent } from './welcome/welcome.component';
+
+
 
 
 
@@ -17,9 +21,8 @@ const routes: Routes = [
   {path :'test-errors',component:TestErrorsComponent},
   {path :'server-error',component:ServerErrorComponent},
   {path :'not-found',component:NotFoundComponent},
- 
-  
-  
+  {path :'imagesPage',component:ImagesPageComponent},
+  {path :'welcome',component:WelcomeComponent}
 ];
 
 @NgModule({
@@ -27,4 +30,4 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
-export const routingComponents=[CompaniesComponent,EmployeesComponent,RegisterComponent,TestErrorsComponent,ServerErrorComponent,NotFoundComponent]
+export const routingComponents=[CompaniesComponent,EmployeesComponent,RegisterComponent,TestErrorsComponent,ServerErrorComponent,NotFoundComponent,ImagesPageComponent]
