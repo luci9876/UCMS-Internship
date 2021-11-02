@@ -70,7 +70,7 @@ namespace HrApi.Repositories
             if (entry == null) throw new Exception();
             entry.Result.Name = company.Name;
             entry.Result.Description = company.Description;
-            if(company.Image!=null)entry.Result.Image = company.Image;
+            if (company.Image!=null && company.Image.Id != 0) { entry.Result.Image = company.Image; }
             await HrContext.SaveChangesAsync();
 
         }

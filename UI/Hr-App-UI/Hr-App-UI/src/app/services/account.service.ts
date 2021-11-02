@@ -44,11 +44,11 @@ export class AccountService {
     Array.isArray(roles) ? user.roles = roles : user.roles.push(roles);
     this.currentUserSource.next(user);
   }
-  logout(){
+  logout() {
     this.currentUserSource.next(undefined);
   }
-getDecodedToken(token:String){
+  getDecodedToken(token: String) {
 
-  return JSON.parse(atob(token.split('.')[1]));
-}
+    return JSON.parse(atob(token.split('.')[1]));
+  }
 }

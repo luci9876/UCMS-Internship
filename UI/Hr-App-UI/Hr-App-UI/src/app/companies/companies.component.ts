@@ -30,7 +30,7 @@ export class CompaniesComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    this.currentImage=null;
+    this.currentImage= {id:0,imageTitle:" ",imageData:" " };
     this.currentCompany= {id:0,name:" ",description:" ",image:this.currentImage,founded:1900 };
     this.base64Image=this.domSanitizer.bypassSecurityTrustUrl('../../assets/default-photo/logo.png');
     this.loadCompanies();
@@ -48,7 +48,7 @@ export class CompaniesComponent implements OnInit {
   }
   public deleteCompany() {
     this.employeesService.delteCompanyById(this.currentId).subscribe(() => {
-      this.currentImage= null;
+      this.currentImage= {id:0,imageTitle:" ",imageData:" " };
       this.currentCompany= {id:0,name:" ",description:" ",image:this.currentImage,founded:1900 };
       this.loadCompanies();
     })
@@ -68,7 +68,7 @@ export class CompaniesComponent implements OnInit {
     console.log("CompanySelected:");
     this.currentId=company.id;
     this.loadCompany();
-    
+    //this.Upload();
     
   }
   public loadImage() {
@@ -96,10 +96,11 @@ export class CompaniesComponent implements OnInit {
     if(exists)
     {
     const uploadFile = new FormData();
-    uploadFile.append('myFile', this.selectedFile, this.selectedFile.name);
-    this.http.post(this.baseUrl,uploadFile,)
+    uploadFile.append('myFile', this.selectedFile);
+    this.http.post(this.baseUrl+'/file-to-byte',uploadFile)
       .subscribe(res=>{
-        console.log(res);
+        this.currentImage.imageData=res.toString();
+        console.log(this.currentImage.imageData);
       });
     }
       else

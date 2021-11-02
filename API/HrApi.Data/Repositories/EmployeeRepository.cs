@@ -34,7 +34,10 @@ namespace HrApi.Repositories
         {
 
             var entry = HrContext.Employees.FirstAsync(e => e.Id == id);
-            HrContext.Entry(entry).CurrentValues.SetValues(employee);
+            if (entry == null) throw new Exception();
+            entry.Result.FirstName = employee.FirstName;
+            entry.Result.LastName = employee.LastName;
+            if (employee.Image != null && employee.Image.Id != 0) { entry.Result.Image = employee.Image; }
             await HrContext.SaveChangesAsync();
 
         }

@@ -24,15 +24,15 @@ namespace HrApi.Controllers
 
         }
         [HttpPost]
-        public async Task<ActionResult<int>> UploadImage()
+        public async Task<ActionResult<int>> UploadImage(Image img)
         {
             
-            var file = Request.Form.Files[0];
-            Image img = new Image();
-            img.ImageTitle = file.FileName;
-            MemoryStream ms = new MemoryStream();
-            file.CopyTo(ms);
-            img.ImageData = ms.ToArray();
+            //var file = Request.Form.Files[0];
+            //Image img = new Image();
+            //img.ImageTitle = file.FileName;
+            //MemoryStream ms = new MemoryStream();
+            //file.CopyTo(ms);
+            //img.ImageData = ms.ToArray();
             try
             {
                int id = await _imageService.AddImage(img);
@@ -60,6 +60,24 @@ namespace HrApi.Controllers
         };
         return Ok(imgDTO);
     }
-}
+        [HttpPost("/file-to-byte")]
+        public Image ImageToFile()
+        {
+            var file = Request.Form.Files[0];
+            Image img = new Image();
+            img.ImageTitle = file.FileName;
+            MemoryStream ms = new MemoryStream();
+            file.CopyTo(ms);
+            Image image = new Image
+            {
+                ImageData = ms.ToArray(),
+                ImageTitle=file.FileName
+
+            };
+            return image;
+
+
+        }
+    }
     }
 
