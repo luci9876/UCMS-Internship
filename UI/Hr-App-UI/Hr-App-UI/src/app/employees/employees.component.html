@@ -26,14 +26,13 @@
 
 <div class="example-button-row">
     <!-- <button (click)="loadEmployee()" mat-raised-button>Get</button> -->
-    <button (click)="addEmployee()" mat-raised-button color="primary">Add an Employee</button>
-    <!-- <button (click)="editEmployee()" mat-raised-button color="accent">Put</button>
-    <button (click)="deleteEmployee()" mat-raised-button color="warn">Delete</button> -->
-
+    <button (click)="addEmployee()" mat-raised-button color="primary">Add an employee</button>
+    <button (click)="editEmployee()" mat-raised-button color="accent">Save current changes </button>
+    <button (click)="deleteEmployee()" mat-raised-button color="warn">Delete employee</button>
+    <input style="display: none" type="file" (change)="onFileChanged($event)" #fileInput>
+    <button (click)="fileInput.click()" mat-raised-button>Select a photo</button>
 </div>
 <div>
-    <input style="display: none" type="file" (change)="onFileChanged($event)" #fileInput>
-    <button (click)="fileInput.click()">Select File</button>
     <h3>{{fileName}}</h3>
 </div>
 <!-- <mat-form-field>
