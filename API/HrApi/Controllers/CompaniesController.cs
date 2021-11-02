@@ -79,9 +79,9 @@ namespace HrApi.Controllers
             {
                await _companyService.PutCompany(id, company);
             }
-            catch(Exception)
+            catch(Exception ex)
             {
-                return NotFound();
+                return NotFound(ex.Message);
             }
             return NoContent();
         }

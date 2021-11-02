@@ -23,6 +23,7 @@ using HrApi.Data.Models.Helpers;
 using HrApi.Data.Models.Interfaces;
 using HrApi.Data.Models;
 using HrApi.BussinessLogic.Services.Interfaces;
+using System.Text.Json;
 
 namespace HrApi
 {
@@ -72,7 +73,12 @@ namespace HrApi
             services.AddScoped<ICompanyService, CompanyService>();
             services.AddScoped<IEmployeeService, EmployeeService>();
             services.AddScoped<IImageService, ImageService>();
-            
+
+            services.AddRazorPages().AddJsonOptions(o =>
+            {
+                o.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+                o.JsonSerializerOptions.DictionaryKeyPolicy = JsonNamingPolicy.CamelCase;
+            });
 
             var mapperConfig = new MapperConfiguration(mc =>
             {

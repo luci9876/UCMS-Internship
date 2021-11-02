@@ -30,7 +30,7 @@ export class CompaniesComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    this.currentImage= {id:0,imageTitle:" ",imageData:" " };
+    this.currentImage=null;
     this.currentCompany= {id:0,name:" ",description:" ",image:this.currentImage,founded:1900 };
     this.base64Image=this.domSanitizer.bypassSecurityTrustUrl('../../assets/default-photo/logo.png');
     this.loadCompanies();
@@ -48,7 +48,7 @@ export class CompaniesComponent implements OnInit {
   }
   public deleteCompany() {
     this.employeesService.delteCompanyById(this.currentId).subscribe(() => {
-      this.currentImage= {id:0,imageTitle:" ",imageData:" " };
+      this.currentImage= null;
       this.currentCompany= {id:0,name:" ",description:" ",image:this.currentImage,founded:1900 };
       this.loadCompanies();
     })
@@ -64,8 +64,11 @@ export class CompaniesComponent implements OnInit {
       })
   }
 
-  public onItemSelected() {
+  public onItemSelected(company:Company) {
     console.log("CompanySelected:");
+    this.currentId=company.id;
+    this.loadCompany();
+    
     
   }
   public loadImage() {
