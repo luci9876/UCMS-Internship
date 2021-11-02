@@ -61,7 +61,7 @@ namespace HrApi.Repositories
         }
         public async Task<Company> GetCompany(int id)
         {
-            return await HrContext.Companies.FindAsync(id);
+            return await HrContext.Companies.Where(x=>x.Id==id).Include(x => x.Image).FirstOrDefaultAsync();
         }
         public async Task PutCompany(int id, Company company)
         {

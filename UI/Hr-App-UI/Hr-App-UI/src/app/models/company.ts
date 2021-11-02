@@ -4,8 +4,8 @@ export interface Company {
     description: string;
     founded:number;
     image?: {
-        id?: number,
-        imageTitle?: string,
-        imageData?: string
+        id: number,
+        imageTitle: string,
+        imageData: string
       }
 }

@@ -22,12 +22,11 @@ export class EmployeesComponent implements OnInit {
   public currentImage:Image;
   public currentId:number=0;
   public base64Image: SafeUrl;
-  public imageService: ImagesServiceService;
   private baseUrl: string = `${environment.apiUrl}Image`;
   public fileName:string;
   private selectedFile: File;
   
-  constructor(private employeesService: EmployeeService, public domSanitizer:DomSanitizer,private http: HttpClient) 
+  constructor(private employeesService: EmployeeService, public domSanitizer:DomSanitizer,private http: HttpClient, private imageService: ImagesServiceService) 
   { 
   this.fileName="No Input Chosen";
   }
@@ -46,7 +45,13 @@ export class EmployeesComponent implements OnInit {
   }
   public loadEmployee() {
     this.employeesService.getEmployeeById(this.currentId).subscribe((employee) => {
-      this.currentEmployee = employee
+      this.currentEmployee = employee;
+      if(this.currentEmployee.image!=null){
+        this.imageService.getImageById(this.currentEmployee.image.id).subscribe((image) => {
+          this.currentImage = image,
+          this.base64Image =this.domSanitizer.bypassSecurityTrustUrl('data:image/png;base64,'+this.currentImage.imageData);
+        })
+      }
     })
   }
   public deleteEmployee() {
@@ -67,8 +72,10 @@ export class EmployeesComponent implements OnInit {
       })
   }
 
-  public onItemSelected() {
+  public onItemSelected(employee:Employee) {
     console.log("EmployeeSelected:");
+    this.currentId=employee.id;
+    this.loadEmployee();
     
   }
   public loadImage() {
@@ -80,6 +87,7 @@ export class EmployeesComponent implements OnInit {
   onFileChanged(event) {
     this.selectedFile = event.target.files[0];
     this.fileName=this.selectedFile.name;
+    this.Upload();
   }
   Upload() {
     var index = this.fileName.lastIndexOf('.');
@@ -96,10 +104,11 @@ export class EmployeesComponent implements OnInit {
     if(exists)
     {
     const uploadFile = new FormData();
-    uploadFile.append('myFile', this.selectedFile, this.selectedFile.name);
-    this.http.post(this.baseUrl,uploadFile,)
+    uploadFile.append('myFile', this.selectedFile);
+    this.http.post(this.baseUrl+'/file-to-byte',uploadFile)
       .subscribe(res=>{
-        console.log(res);
+        this.currentImage.imageData=res.toString();
+        
       });
     }
       else
@@ -107,6 +116,4 @@ export class EmployeesComponent implements OnInit {
        alert("This file is not an image!");
       }
   }
-  
-
 }

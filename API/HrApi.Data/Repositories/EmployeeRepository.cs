@@ -28,7 +28,7 @@ namespace HrApi.Repositories
         }
         public async Task<Employee> GetEmployee(int id)
         {
-            return await HrContext.Employees.FindAsync(id);
+            return await HrContext.Employees.Where(x => x.Id == id).Include(x => x.Image).FirstOrDefaultAsync();
         }
         public async Task PutEmployee(int id, Employee employee)
         {
