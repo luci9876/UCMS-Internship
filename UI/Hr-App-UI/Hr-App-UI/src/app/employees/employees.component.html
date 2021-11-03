@@ -1,6 +1,6 @@
 <h1 style="text-align: center;">List of employees</h1>
 <div *ngFor="let employee of employees">
-    <app-employee-card [employee]="employee" (selectionChange)="onItemSelected()"></app-employee-card>
+    <app-employee-card [employee]="employee" (click)="onItemSelected(employee)"></app-employee-card>
 </div>
 <h2 style="text-align: center;">Operations</h2>
 <form class="example-form">

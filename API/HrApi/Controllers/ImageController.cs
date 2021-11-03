@@ -60,21 +60,16 @@ namespace HrApi.Controllers
         };
         return Ok(imgDTO);
     }
-        [HttpPost("/file-to-byte")]
-        public Image ImageToFile()
+        [HttpPost("file-to-byte")]
+        public async Task<byte[]> ImageToFile()
         {
             var file = Request.Form.Files[0];
             Image img = new Image();
             img.ImageTitle = file.FileName;
             MemoryStream ms = new MemoryStream();
             file.CopyTo(ms);
-            Image image = new Image
-            {
-                ImageData = ms.ToArray(),
-                ImageTitle=file.FileName
 
-            };
-            return image;
+            return ms.ToArray();
 
 
         }
