@@ -25,7 +25,7 @@ import { CompanyService } from './services/company.service';
 import { EmployeeService } from './services/employee.service';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { AccountService } from './services/account.service';
-import { ImagesPageComponent } from './images-page/images-page.component';
+
 import { WelcomeComponent } from './welcome/welcome.component';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -45,7 +45,6 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
     TestErrorsComponent,
     ServerErrorComponent,
     NotFoundComponent,
-    ImagesPageComponent,
     WelcomeComponent
 
 
