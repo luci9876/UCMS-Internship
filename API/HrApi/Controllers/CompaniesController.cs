@@ -34,6 +34,7 @@ namespace HrApi.Controllers
 
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<Company>>> GetCompanies([FromQuery] CompanyParameters companyParameters)
         {
             if (!companyParameters.ValidYearRange)
@@ -57,6 +58,7 @@ namespace HrApi.Controllers
 
 
         [HttpGet("{id}")]
+        [Authorize]
 
         public async Task<ActionResult<CompanyDTO>> GetCompany(int id)
         {
@@ -71,6 +73,7 @@ namespace HrApi.Controllers
 
 
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> PutCompany(int id, CompanyDTO companyDTO)
         {
             var company = _mapper.Map<Company>(companyDTO);
@@ -88,6 +91,7 @@ namespace HrApi.Controllers
 
 
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<Company>> PostCompany(CompanyDTO companyDTO)
         {
             var company= _mapper.Map<Company>(companyDTO);
@@ -106,6 +110,7 @@ namespace HrApi.Controllers
 
 
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteCompany(int id)
         {
             try
@@ -120,6 +125,7 @@ namespace HrApi.Controllers
         }
 
         [HttpGet("employees-by-company/{id}")]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<Employee>>> GetCompanyEmployee(int id)
         {
             try
@@ -134,6 +140,7 @@ namespace HrApi.Controllers
             
         }
         [HttpPost("employees-at-company")]
+        [Authorize]
         public async Task<ActionResult<Company>> PostCompany(CompanyEmployeeDTO companyEmployeeDTO)
         {
             

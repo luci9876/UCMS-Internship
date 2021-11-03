@@ -33,12 +33,14 @@ namespace HrApi.Controllers
 
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<EmployeeDTO>>> GetEmployees()
         {
             return Ok(await _employeeService.GetEmployees());
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<ActionResult<EmployeeDTO>> GetEmployee(int id)
         {
             var employee = await _employeeService.GetEmployee(id);
@@ -53,6 +55,7 @@ namespace HrApi.Controllers
 
 
         [HttpPut("{id}")]
+        [Authorize]
         public async  Task<IActionResult> PutEmployee(int id, EmployeeDTO employeeDTO)
         {
             var employee = _mapper.Map<Employee>(employeeDTO);
@@ -70,6 +73,7 @@ namespace HrApi.Controllers
 
 
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<Employee>> PostEmployee(EmployeeDTO employeeDTO)
         {
             var employee = _mapper.Map<Employee>(employeeDTO);
@@ -88,7 +92,8 @@ namespace HrApi.Controllers
         }
 
         [HttpDelete("{id}")]
-        
+        [Authorize]
+
         public async Task<IActionResult> DeleteEmployee(int id)
         {
 
